@@ -1,0 +1,13 @@
+column,description
+athlete,Anonymous athlete code
+session,Visit number (1 = first visit with the full battery)
+days_from_first,Days since the athlete's first visit
+followup_window_days,Days from the athlete's first visit to the end of data collection
+age,"Age at the visit (years, 0.1)"
+test_type,"CMJ, Drop Jump or Single-Leg Jump"
+test_no,Test number when a test was repeated on the same day
+limb,"Both, Left or Right"
+trial,Trial (attempt) number within the test and limb
+metric,Test: VALD metric name
+unit,VALD unit
+value,Trial value

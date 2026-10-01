@@ -1,0 +1,13 @@
+# R / RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Renviron
+
+# macOS
+.DS_Store
+
+# Private data and local files (never published)
+data/
+backups/
+results/run_log*.txt

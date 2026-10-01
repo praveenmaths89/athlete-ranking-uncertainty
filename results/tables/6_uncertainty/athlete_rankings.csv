@@ -1,0 +1,184 @@
+athlete,visits,attempts,age_latest,current_score,current_rank,current_rank_lower,current_rank_upper,current_p_topk,current_tier,current_decision,age_score,age_rank,age_rank_lower,age_rank_upper,age_p_topk,age_tier,age_decision,hidden_talent
+AID049,2,20,13.9,-0.37667243316765614,13,4,35,1,clearly top,select,-0.3477299632316076,1,1,13,1,clearly top,select,FALSE
+AID168,1,10,17.7,-0.2902469440652335,1,1,2,1,clearly top,select,-0.3586841134546166,2,1,17,1,clearly top,select,FALSE
+AID133,2,19,13.6,-0.3990107420630254,29,13,49,0.995,not separable,select,-0.3588890728724266,3,1,15,1,clearly top,select,FALSE
+AID146,1,9,15.6,-0.3433388085022858,6,3,15,1,clearly top,select,-0.3602558685248458,4,1,15,1,clearly top,select,FALSE
+AID016,2,12,14.7,-0.37985765409193833,14,7,34,1,clearly top,select,-0.36330316492349213,5,1,17,1,clearly top,select,FALSE
+AID028,2,13,13.3,-0.39260719237898467,25,5,57,0.84,not separable,retest (grey zone),-0.3665213606094878,6,1,18,1,clearly top,select,FALSE
+AID094,2,21,12.5,-0.4443057428080484,60,36,84,0,not separable,don't select,-0.37357935104496676,7,1,17,1,clearly top,select,TRUE
+AID093,3,27,15.4,-0.3830830536115323,17,8,35,1,clearly top,select,-0.37389294493740466,8,1,17,1,clearly top,select,FALSE
+AID090,3,27,14.8,-0.39427121195724235,26,10,47,1,not separable,select,-0.3748738853678597,9,1,19,1,clearly top,select,FALSE
+AID030,2,17,14,-0.41447518689471535,39,19,60,0.435,not separable,retest (grey zone),-0.3785619985219993,10,1,21,1,clearly top,select,TRUE
+AID071,1,8,11.4,-0.4334631235238242,48,24,84,0.01,not separable,don't select,-0.3797256212262098,11,1,27,1,clearly top,select,TRUE
+AID152,2,18,12,-0.43840866990608895,54,33,80,0,not separable,don't select,-0.379958883328833,12,1,22,1,clearly top,select,TRUE
+AID169,2,17,12.4,-0.4344927501607078,51,26,84,0.005,not separable,don't select,-0.38265655242701235,13,1,27,1,clearly top,select,TRUE
+AID104,2,17,14.4,-0.4128284628225199,36,17,59,0.475,not separable,retest (grey zone),-0.3866666108118894,14,2,25,1,clearly top,select,FALSE
+AID119,3,26,12.5,-0.45230133945353207,65,43,88,0,not separable,don't select,-0.3890170976888201,15,2,29,1,clearly top,select,TRUE
+AID077,1,11,21.6,-0.2984506043337304,2,1,3,1,clearly top,select,-0.397382975415773,16,5,36,1,clearly top,select,FALSE
+AID035,3,25,12.9,-0.4663288995030124,78,56,100,0,not separable,don't select,-0.4050842230179904,17,8,39,1,not separable,select,TRUE
+AID096,1,8,11.7,-0.4838576771004069,89,71,113,0,not separable,don't select,-0.40791042562812535,18,11,39,1,not separable,select,TRUE
+AID185,1,6,14.7,-0.4127986058796216,35,19,58,0.5,not separable,retest (grey zone),-0.40793357555510634,19,9,42,1,not separable,select,FALSE
+AID044,1,8,24.6,-0.3309353256886373,3,2,9,1,clearly top,select,-0.4088760490902107,20,9,44,1,not separable,select,FALSE
+AID103,1,8,16.5,-0.3822346031310721,16,8,35,1,clearly top,select,-0.4123104653946225,21,12,43,1,not separable,select,FALSE
+AID036,1,10,35.3,-0.4180155380059028,42,19,65,0.32,not separable,retest (grey zone),-0.41323166732431865,22,8,57,0.995,not separable,select,TRUE
+AID112,2,13,14.4,-0.44225703898554114,56,38,79,0,not separable,don't select,-0.4133579299262444,23,13,43,1,not separable,select,TRUE
+AID092,1,6,10.8,-0.49985058368942237,102,79,126,0,not separable,don't select,-0.4154438144405413,24,12,55,1,not separable,select,TRUE
+AID115,3,25,12.8,-0.47256722821468855,83,49,115,0,not separable,don't select,-0.4174061904007226,25,9,62,0.92,not separable,select,TRUE
+AID040,1,7,12.9,-0.45774150460540597,70,33,115,0,not separable,don't select,-0.4189550210538851,26,6,75,0.8,not separable,retest (grey zone),TRUE
+AID183,2,12,12.3,-0.4816138333101997,87,62,116,0,not separable,don't select,-0.42052637306737695,27,12,63,0.945,not separable,select,TRUE
+AID165,3,25,14.1,-0.45109519035237927,64,44,85,0,not separable,don't select,-0.421389276490044,28,16,55,1,not separable,select,TRUE
+AID008,3,24,14.4,-0.4579048159897046,71,49,90,0,not separable,don't select,-0.4223826172433057,29,16,57,1,not separable,select,TRUE
+AID033,2,18,12.4,-0.483309817941678,88,69,115,0,not separable,don't select,-0.4224270815566645,30,16,57,0.99,not separable,select,TRUE
+AID159,2,17,11.6,-0.5036770156412271,108,80,136,0,not separable,don't select,-0.4237638455853913,31,14,63,0.835,not separable,retest (grey zone),TRUE
+AID064,2,17,12.9,-0.4636213065259844,77,47,102,0,not separable,don't select,-0.424843596184506,32,15,64,0.88,not separable,retest (grey zone),TRUE
+AID118,2,17,12.5,-0.4811183938468141,86,64,116,0,not separable,don't select,-0.42742713021883605,33,16,65,0.865,not separable,retest (grey zone),TRUE
+AID065,1,9,27.3,-0.3485522116546786,7,3,15,1,clearly top,select,-0.42756585192184754,34,16,71,0.73,not separable,retest (grey zone),FALSE
+AID019,1,11,14.1,-0.4478831263519589,62,37,85,0,not separable,don't select,-0.43022642937344996,35,16,67,0.715,not separable,retest (grey zone),TRUE
+AID082,2,17,13.4,-0.47770316132198415,85,62,111,0,not separable,don't select,-0.4322129461399656,36,16,67,0.615,not separable,retest (grey zone),TRUE
+AID025,1,7,10.1,-0.5464633468233336,140,122,168,0,not separable,don't select,-0.4333441465017101,37,19,67,0.49,not separable,retest (grey zone),FALSE
+AID178,1,7,14.2,-0.44293036609036956,57,34,84,0,not separable,don't select,-0.4368612124679321,38,19,72,0.315,not separable,retest (grey zone),FALSE
+AID105,1,3,14.1,-0.4433964028435029,58,38,80,0,not separable,don't select,-0.43705309487209415,39,23,67,0.385,not separable,retest (grey zone),FALSE
+AID069,2,19,19.7,-0.34196911014902576,5,3,12,1,clearly top,select,-0.43760200234074753,40,19,74,0.275,not separable,retest (grey zone),FALSE
+AID085,1,11,9.1,-0.5489286306051091,144,122,171,0,not separable,don't select,-0.438782119941397,41,23,73,0.16,not separable,retest (grey zone),FALSE
+AID041,1,7,13.9,-0.46304189536677764,75,47,102,0,not separable,don't select,-0.43985712939423666,42,23,74,0.255,not separable,retest (grey zone),FALSE
+AID172,2,11,13.6,-0.45979089924684174,74,49,94,0,not separable,don't select,-0.44225732504787857,43,23,75,0.03,not separable,don't select,FALSE
+AID160,1,4,14.2,-0.4372708828371306,53,33,80,0,not separable,don't select,-0.4425773499468408,44,23,74,0.035,not separable,don't select,FALSE
+AID135,2,15,11.5,-0.5244550495631338,122,96,149,0,not separable,don't select,-0.44335937083949245,45,23,83,0.13,not separable,retest (grey zone),FALSE
+AID001,1,8,15,-0.4526309896482073,66,44,87,0,not separable,don't select,-0.4441520245707699,46,24,77,0.015,not separable,don't select,FALSE
+AID023,1,8,31.4,-0.4027751828508367,30,12,55,0.875,not separable,retest (grey zone),-0.4455882615558997,47,19,97,0.19,not separable,retest (grey zone),FALSE
+AID050,2,19,12.8,-0.5017065494595835,104,72,138,0,not separable,don't select,-0.44676004417285226,48,19,98,0.135,not separable,retest (grey zone),FALSE
+AID002,2,11,13.8,-0.46981470145828186,81,56,102,0,not separable,don't select,-0.447663203616926,49,25,83,0,not separable,don't select,FALSE
+AID017,2,15,12.3,-0.5084470251501322,114,80,138,0,not separable,don't select,-0.44869968989825737,50,23,95,0.055,not separable,don't select,FALSE
+AID084,1,8,13.5,-0.48614479667907196,91,71,115,0,not separable,don't select,-0.44878037036625446,51,27,83,0,not separable,don't select,FALSE
+AID014,1,8,16.3,-0.4341520913300082,50,30,80,0,not separable,don't select,-0.45086891843418386,52,23,96,0.02,not separable,don't select,FALSE
+AID144,1,8,16.3,-0.42010178718761293,44,23,65,0.14,not separable,retest (grey zone),-0.453179513092443,53,28,90,0,not separable,don't select,FALSE
+AID122,2,15,12.6,-0.5040723943692395,109,78,138,0,not separable,don't select,-0.4534645823998098,54,23,110,0.05,not separable,don't select,FALSE
+AID186,2,12,13,-0.495663268742008,100,79,116,0,not separable,don't select,-0.4536878479808887,55,28,88,0,not separable,don't select,FALSE
+AID060,1,9,10.8,-0.5392855872637858,134,118,162,0,not separable,don't select,-0.45473830751695826,56,28,93,0,not separable,don't select,FALSE
+AID047,1,3,11.4,-0.5194341395943669,121,99,137,0,not separable,don't select,-0.45570445794844855,57,35,85,0,not separable,don't select,FALSE
+AID021,1,9,14.3,-0.47703480685164057,84,49,117,0,not separable,don't select,-0.4562949417640861,58,23,113,0.04,not separable,don't select,FALSE
+AID150,2,14,13.9,-0.48438829108138004,90,70,115,0,not separable,don't select,-0.4569724204559708,59,28,96,0,not separable,don't select,FALSE
+AID187,2,18,15,-0.4699528235863265,82,56,103,0,not separable,don't select,-0.45705007810664333,60,28,100,0.005,not separable,don't select,FALSE
+AID070,1,7,15.4,-0.4446752808728522,61,29,97,0,not separable,don't select,-0.4582016678836192,61,24,114,0.005,not separable,don't select,FALSE
+AID138,1,9,17,-0.414468941241441,38,6,88,0.35,not separable,retest (grey zone),-0.458354208356786,62,18,134,0.065,not separable,don't select,FALSE
+AID012,3,26,15.5,-0.4674976828172721,79,56,101,0,not separable,don't select,-0.4583557692383669,63,32,98,0,not separable,don't select,FALSE
+AID131,1,10,10.6,-0.5427448934779693,136,103,174,0,not separable,don't select,-0.45971915535721375,64,23,131,0.05,not separable,don't select,FALSE
+AID181,1,8,13,-0.5043801651435508,110,86,127,0,not separable,don't select,-0.460034462557098,65,37,96,0,not separable,don't select,FALSE
+AID020,1,12,23.5,-0.37560166297113895,12,6,30,1,clearly top,select,-0.46004717067243023,66,37,96,0,not separable,don't select,FALSE
+AID170,2,15,13.1,-0.5063599534639998,111,80,137,0,not separable,don't select,-0.46123014979337246,67,28,114,0,not separable,don't select,FALSE
+AID087,2,20,20.5,-0.3359350866206973,4,1,12,1,clearly top,select,-0.46150208164138207,68,23,129,0.005,not separable,don't select,FALSE
+AID079,1,11,16.8,-0.434922932312703,52,34,74,0,not separable,don't select,-0.46168917303886814,69,37,102,0,not separable,don't select,FALSE
+AID051,1,11,10.8,-0.5515389216555957,148,121,174,0,not separable,don't select,-0.4620916320724161,70,32,114,0,not separable,don't select,FALSE
+AID007,1,7,10.6,-0.5469772946370755,141,124,168,0,not separable,don't select,-0.4649015051612909,71,44,105,0,not separable,don't select,FALSE
+AID179,1,6,16,-0.4568894489452533,67,46,93,0,not separable,don't select,-0.46616065964422404,72,37,115,0,not separable,don't select,FALSE
+AID091,1,8,32.6,-0.4439393788213167,59,38,80,0,not separable,don't select,-0.46750774426462505,73,39,115,0,not separable,don't select,FALSE
+AID057,1,11,10.8,-0.5453211250576767,138,122,167,0,not separable,don't select,-0.4687797515578191,74,45,115,0,not separable,don't select,FALSE
+AID176,3,28,31.1,-0.384351446791756,19,10,38,1,not separable,select,-0.4693936146979233,75,41,119,0,not separable,don't select,FALSE
+AID006,1,9,29.8,-0.38903642339697553,23,10,43,1,not separable,select,-0.46991946966730974,76,37,123,0,not separable,don't select,FALSE
+AID073,3,25,14.1,-0.49290927851024813,98,73,117,0,not separable,don't select,-0.47009641868232516,77,45,116,0,not separable,don't select,FALSE
+AID184,1,10,11.3,-0.5370197667222225,132,107,165,0,not separable,don't select,-0.4702940661389388,78,33,133,0,not separable,don't select,FALSE
+AID109,2,14,13.1,-0.4985524070956078,101,79,126,0,not separable,don't select,-0.47223552098120986,79,45,120,0,not separable,don't select,FALSE
+AID101,2,17,12.8,-0.5176995909199618,118,96,137,0,not separable,don't select,-0.4742205433805871,80,49,119,0,not separable,don't select,FALSE
+AID177,1,12,13.6,-0.5029803591485535,106,80,136,0,not separable,don't select,-0.47509001857048005,81,44,131,0,not separable,don't select,FALSE
+AID046,3,25,13.9,-0.5036708370115847,107,83,130,0,not separable,don't select,-0.4766921073957881,82,50,129,0,not separable,don't select,FALSE
+AID136,1,11,32.9,-0.44859024100871836,63,40,84,0,not separable,don't select,-0.47775482103994354,83,50,130,0,not separable,don't select,FALSE
+AID182,1,10,11.2,-0.5559773222054893,151,124,174,0,not separable,don't select,-0.47893203398166817,84,47,141,0,not separable,don't select,FALSE
+AID180,1,9,14.8,-0.4908444426905621,97,66,124,0,not separable,don't select,-0.479630534953868,85,46,141,0,not separable,don't select,FALSE
+AID190,1,6,13.4,-0.5146710223644579,116,92,137,0,not separable,don't select,-0.4810997208160412,86,56,132,0,not separable,don't select,FALSE
+AID162,3,29,19.9,-0.3702842422618326,11,5,27,1,clearly top,select,-0.4811512625480111,87,58,130,0,not separable,don't select,FALSE
+AID174,2,18,33,-0.4422232642618143,55,38,80,0,not separable,don't select,-0.48119216378162816,88,52,138,0,not separable,don't select,FALSE
+AID098,1,3,12.6,-0.5151588742564815,117,92,137,0,not separable,don't select,-0.48290561749211497,89,62,133,0,not separable,don't select,FALSE
+AID161,1,10,13.7,-0.5077609067123731,112,83,137,0,not separable,don't select,-0.484262887004012,90,56,141,0,not separable,don't select,FALSE
+AID167,2,25,14.6,-0.4905554337688604,96,66,124,0,not separable,don't select,-0.48445456694045097,91,46,146,0,not separable,don't select,FALSE
+AID114,1,8,14.5,-0.5026956785364913,105,80,134,0,not separable,don't select,-0.48503545266028564,92,53,142,0,not separable,don't select,FALSE
+AID106,2,17,11.8,-0.5593660501192537,155,125,175,0,not separable,don't select,-0.4857340669350681,93,51,144,0,not separable,don't select,FALSE
+AID018,1,8,30.5,-0.4171525218062235,41,17,67,0.35,not separable,retest (grey zone),-0.4861200203936527,94,49,146,0,not separable,don't select,FALSE
+AID142,3,31,24.2,-0.38434947610734604,18,10,38,1,not separable,select,-0.4869195448395156,95,53,144,0,not separable,don't select,FALSE
+AID053,2,24,26.2,-0.38771140678035937,21,10,43,1,not separable,select,-0.4869260028220747,96,52,145,0,not separable,don't select,FALSE
+AID111,1,8,27.1,-0.3892749377962003,24,10,44,1,not separable,select,-0.4872524181254175,97,53,145,0,not separable,don't select,FALSE
+AID134,2,18,12.6,-0.5260450864699463,123,104,144,0,not separable,don't select,-0.48794503085661894,98,62,142,0,not separable,don't select,FALSE
+AID171,1,9,11.4,-0.5694015212934589,166,133,177,0,not separable,don't select,-0.48918509624169676,99,58,146,0,not separable,don't select,FALSE
+AID063,4,38,15.2,-0.49355896340358424,99,71,124,0,not separable,don't select,-0.4903422070986415,100,60,146,0,not separable,don't select,FALSE
+AID074,1,10,14.8,-0.5006199510512434,103,79,131,0,not separable,don't select,-0.49041145144776505,101,58,147,0,not separable,don't select,FALSE
+AID009,1,10,14.8,-0.48773894866001877,93,68,117,0,not separable,don't select,-0.49073537098928666,102,63,146,0,not separable,don't select,FALSE
+AID102,3,28,20.5,-0.3569181301123743,8,3,20,1,clearly top,select,-0.4911007249175125,103,62,146,0,not separable,don't select,FALSE
+AID128,1,9,10.9,-0.5598600732251439,156,127,175,0,not separable,don't select,-0.4912996610724379,104,63,146,0,not separable,don't select,FALSE
+AID015,1,8,23.7,-0.39716759580880456,27,13,46,1,not separable,select,-0.49145160940489896,105,64,145,0,not separable,don't select,FALSE
+AID003,1,8,11.5,-0.5506846066152016,147,121,174,0,not separable,don't select,-0.49157093240041566,106,63,146,0,not separable,don't select,FALSE
+AID038,2,16,12,-0.5326889168158596,128,107,154,0,not separable,don't select,-0.4921867311856248,107,63,146,0,not separable,don't select,FALSE
+AID137,1,11,13.5,-0.5269939078609145,124,103,149,0,not separable,don't select,-0.4925804012281393,108,65,145,0,not separable,don't select,FALSE
+AID153,1,11,22.7,-0.38643789369426973,20,8,44,1,not separable,select,-0.4943703878879564,109,64,147,0,not separable,don't select,FALSE
+AID037,1,9,11.1,-0.5660956140013215,165,136,175,0,not separable,don't select,-0.49538542187740087,110,73,145,0,not separable,don't select,FALSE
+AID068,1,12,18.7,-0.4086937720745974,33,19,52,0.84,not separable,retest (grey zone),-0.49675032325961416,111,76,145,0,not separable,don't select,FALSE
+AID032,1,10,21.5,-0.38065088197251157,15,6,42,1,not separable,select,-0.49731062494302086,112,64,147,0,not separable,don't select,FALSE
+AID089,2,13,11.2,-0.5651097421797784,164,131,175,0,not separable,don't select,-0.4973817824074125,113,70,147,0,not separable,don't select,FALSE
+AID048,2,17,17.2,-0.4584996671760675,72,49,92,0,not separable,don't select,-0.49874437716525016,114,74,147,0,not separable,don't select,FALSE
+AID143,2,17,13.6,-0.5082355830344082,113,83,137,0,not separable,don't select,-0.49917229961586407,115,71,147,0,not separable,don't select,FALSE
+AID145,2,18,14.2,-0.5192680296524748,120,96,138,0,not separable,don't select,-0.49942833137087667,116,76,147,0,not separable,don't select,FALSE
+AID056,1,13,12.7,-0.5393778159843544,135,107,170,0,not separable,don't select,-0.49956047461486003,117,64,154,0,not separable,don't select,FALSE
+AID081,3,27,31.4,-0.4284329024942623,47,29,70,0.04,not separable,don't select,-0.500130927625762,118,65,151,0,not separable,don't select,FALSE
+AID075,3,28,22,-0.36028658062206964,9,4,20,1,clearly top,select,-0.5015844781423013,119,80,147,0,not separable,don't select,FALSE
+AID130,1,10,11,-0.5634009853497971,162,128,175,0,not separable,don't select,-0.5022291433961372,120,73,152,0,not separable,don't select,FALSE
+AID097,1,12,13.3,-0.529996028546145,126,103,155,0,not separable,don't select,-0.5025776388527098,121,74,151,0,not separable,don't select,FALSE
+AID045,3,27,20.6,-0.3687676667050979,10,5,27,1,clearly top,select,-0.5036749647199013,122,82,148,0,not separable,don't select,FALSE
+AID120,1,9,34.3,-0.4883548739150637,94,70,116,0,not separable,don't select,-0.5048748857800944,123,77,152,0,not separable,don't select,FALSE
+AID175,2,19,17.2,-0.45969288620378207,73,49,92,0,not separable,don't select,-0.5049190254192859,124,83,148,0,not separable,don't select,FALSE
+AID140,2,24,14.3,-0.5281466867759929,125,102,153,0,not separable,don't select,-0.5054052941277236,125,77,152,0,not separable,don't select,FALSE
+AID095,1,8,12.6,-0.5359748697661169,130,116,154,0,not separable,don't select,-0.5054469216311132,126,83,148,0,not separable,don't select,FALSE
+AID125,1,8,12.8,-0.5484773559397599,143,122,171,0,not separable,don't select,-0.5068910968491216,127,82,152,0,not separable,don't select,FALSE
+AID116,2,16,12.2,-0.5506331860767391,146,122,174,0,not separable,don't select,-0.5081526219280661,128,78,154,0,not separable,don't select,FALSE
+AID031,2,22,20.1,-0.38842170667188713,22,8,44,1,not separable,select,-0.5091823226295509,129,77,161,0,not separable,don't select,FALSE
+AID013,1,11,10.9,-0.5605617943801152,158,128,174,0,not separable,don't select,-0.51050394850452,130,85,154,0,not separable,don't select,FALSE
+AID054,1,6,12.4,-0.5498108549136396,145,106,177,0,not separable,don't select,-0.5127411465297904,131,64,172,0,not separable,don't select,FALSE
+AID100,2,14,26.1,-0.4028565235415367,31,13,52,0.995,not separable,select,-0.5130423052961042,132,83,163,0,not separable,don't select,FALSE
+AID121,1,12,37.9,-0.5543026652395842,150,121,174,0,not separable,don't select,-0.5133226785702004,133,74,170,0,not separable,don't select,FALSE
+AID148,1,6,17.8,-0.45732921225518897,69,50,89,0,not separable,don't select,-0.5149974589518812,134,96,156,0,not separable,don't select,FALSE
+AID157,1,8,14.7,-0.530453667176566,127,99,162,0,not separable,don't select,-0.5164852213481224,135,88,166,0,not separable,don't select,FALSE
+AID189,1,8,19.7,-0.4128694147378784,37,14,62,0.485,not separable,retest (grey zone),-0.5169672952825681,136,85,169,0,not separable,don't select,FALSE
+AID067,1,9,19.2,-0.41906169118018755,43,19,68,0.23,not separable,retest (grey zone),-0.519312061900467,137,88,170,0,not separable,don't select,FALSE
+AID005,1,8,11,-0.579423122998679,171,137,178,0,not separable,don't select,-0.5215067116264939,138,88,172,0,not separable,don't select,FALSE
+AID072,1,9,33.3,-0.4904711847838703,95,66,122,0,not separable,don't select,-0.5215821188434108,139,88,172,0,not separable,don't select,FALSE
+AID026,2,13,13.5,-0.53804623198925,133,102,171,0,not separable,don't select,-0.5229535246281422,140,87,173,0,not separable,don't select,FALSE
+AID158,1,9,11.7,-0.5790393658794117,170,142,178,0,not separable,don't select,-0.523999484701139,141,95,171,0,not separable,don't select,FALSE
+AID011,2,13,17.2,-0.4867967213999344,92,66,117,0,not separable,don't select,-0.5242596479960425,142,93,171,0,not separable,don't select,FALSE
+AID126,2,18,17.2,-0.46966051633091416,80,49,111,0,not separable,don't select,-0.5292937060204534,143,109,173,0,not separable,don't select,FALSE
+AID147,2,12,13.5,-0.5537941292398127,149,127,173,0,not separable,don't select,-0.529622769695965,144,121,168,0,not separable,don't select,FALSE
+AID123,1,9,18,-0.4632940806743516,76,35,116,0,not separable,don't select,-0.529635622629086,145,72,175,0,not separable,don't select,FALSE
+AID164,2,16,12,-0.5565655039644076,153,121,175,0,not separable,don't select,-0.5307669841072667,146,105,173,0,not separable,don't select,FALSE
+AID155,1,9,14,-0.5362351838014066,131,92,174,0,not separable,don't select,-0.5330223619127408,147,89,173,0,not separable,don't select,FALSE
+AID080,1,8,20.7,-0.3973963621354625,28,13,47,1,not separable,select,-0.5342831881915028,148,127,172,0,not separable,don't select,FALSE
+AID139,1,8,26.9,-0.4335832820593767,49,33,72,0,not separable,don't select,-0.5370173058873547,149,120,173,0,not separable,don't select,FALSE
+AID052,1,9,16.8,-0.5132243480082511,115,78,156,0,not separable,don't select,-0.5382904976669518,150,94,175,0,not separable,don't select,FALSE
+AID113,2,19,12.7,-0.5720079418581097,167,137,177,0,not separable,don't select,-0.5385685884227576,151,120,173,0,not separable,don't select,FALSE
+AID058,1,4,12.4,-0.5628808511132902,160,135,174,0,not separable,don't select,-0.5391298430310855,152,131,173,0,not separable,don't select,FALSE
+AID173,3,30,26.5,-0.4168047275884195,40,25,58,0.27,not separable,retest (grey zone),-0.5393023942515839,153,130,173,0,not separable,don't select,FALSE
+AID149,1,4,11.6,-0.5591311204747476,154,128,174,0,not separable,don't select,-0.5415340559357235,154,131,173,0,not separable,don't select,FALSE
+AID127,2,20,25,-0.4244374767136456,45,31,61,0.005,not separable,don't select,-0.5416462026205027,155,131,173,0,not separable,don't select,FALSE
+AID141,2,25,23.5,-0.40291409589177996,32,13,53,0.975,not separable,select,-0.5426879464854518,156,131,173,0,not separable,don't select,FALSE
+AID029,1,6,13.1,-0.5738552552432348,169,134,177,0,not separable,don't select,-0.543454977536543,157,127,173,0,not separable,don't select,FALSE
+AID154,1,4,13.9,-0.5563201136401305,152,127,174,0,not separable,don't select,-0.5464425599761802,158,134,173,0,not separable,don't select,FALSE
+AID027,2,21,13,-0.5648010910069522,163,128,176,0,not separable,don't select,-0.5465749679026782,159,131,174,0,not separable,don't select,FALSE
+AID061,1,9,15.5,-0.5480934416266539,142,113,174,0,not separable,don't select,-0.5478099139163961,160,121,177,0,not separable,don't select,FALSE
+AID088,1,9,16.8,-0.5184727706803196,119,96,139,0,not separable,don't select,-0.5492054657041097,161,133,174,0,not separable,don't select,FALSE
+AID124,1,10,14.1,-0.5633108862198761,161,124,177,0,not separable,don't select,-0.5495926125592693,162,131,174,0,not separable,don't select,FALSE
+AID076,2,19,11.3,-0.5924291300631653,176,156,178,0,clearly bottom,don't select,-0.5499315844005161,163,132,174,0,not separable,don't select,FALSE
+AID066,1,8,12,-0.5893658041204846,173,144,180,0,not separable,don't select,-0.5514234761565555,164,128,178,0,not separable,don't select,FALSE
+AID166,1,10,14.7,-0.560361420887674,157,125,175,0,not separable,don't select,-0.5527827562135986,165,133,176,0,not separable,don't select,FALSE
+AID034,1,8,16.5,-0.5354194519384678,129,107,163,0,not separable,don't select,-0.5547262988975608,166,134,176,0,not separable,don't select,FALSE
+AID188,1,10,14.8,-0.562583474885008,159,128,175,0,not separable,don't select,-0.5556657666137681,167,136,175,0,not separable,don't select,FALSE
+AID024,1,9,12.1,-0.5909958301670876,174,162,178,0,clearly bottom,don't select,-0.5587872379955245,168,142,177,0,not separable,don't select,FALSE
+AID062,3,30,20.5,-0.4091571487730413,34,18,53,0.825,not separable,retest (grey zone),-0.5595898235595897,169,139,177,0,not separable,don't select,FALSE
+AID010,3,29,29.4,-0.42601633832067204,46,27,67,0.04,not separable,don't select,-0.5597219554406017,170,135,178,0,not separable,don't select,FALSE
+AID117,1,28,15.4,-0.5462863274506483,139,107,174,0,not separable,don't select,-0.5649344023569308,171,133,181,0,not separable,don't select,FALSE
+AID039,1,8,26.6,-0.4570861040320912,68,40,101,0,not separable,don't select,-0.5710931282724194,172,136,182,0,not separable,don't select,FALSE
+AID043,1,6,9.2,-0.6409967257178315,181,177,183,0,clearly bottom,don't select,-0.5740511750867694,173,145,181,0,not separable,don't select,FALSE
+AID083,1,6,13.9,-0.5957669643791753,177,164,178,0,clearly bottom,don't select,-0.5893277410868544,174,162,182,0,clearly bottom,don't select,FALSE
+AID156,1,14,10.2,-0.6420225183513422,182,179,183,0,clearly bottom,don't select,-0.5920711718811942,175,167,182,0,clearly bottom,don't select,FALSE
+AID022,1,7,16,-0.5818771967541937,172,142,178,0,not separable,don't select,-0.5952446081239858,176,166,182,0,clearly bottom,don't select,FALSE
+AID163,3,26,14.4,-0.5912420569563669,175,139,180,0,not separable,don't select,-0.5973656412083501,177,160,182,0,clearly bottom,don't select,FALSE
+AID078,1,9,12.5,-0.609464435783212,178,171,181,0,clearly bottom,don't select,-0.5977028248439353,178,166,182,0,clearly bottom,don't select,FALSE
+AID132,1,11,16.8,-0.572614343683911,168,136,177,0,not separable,don't select,-0.6005756795361219,179,171,182,0,clearly bottom,don't select,FALSE
+AID107,1,8,33.1,-0.5434517950861214,137,122,165,0,not separable,don't select,-0.6052388157965493,180,171,182,0,clearly bottom,don't select,FALSE
+AID110,1,9,10.8,-0.6490865789050593,183,179,183,0,clearly bottom,don't select,-0.6068270488786853,181,171,182,0,clearly bottom,don't select,FALSE
+AID151,2,16,12.3,-0.6246199982226771,179,176,183,0,clearly bottom,don't select,-0.61942870022582,182,173,182,0,clearly bottom,don't select,FALSE
+AID086,2,16,14.9,-0.625329822644814,180,176,183,0,clearly bottom,don't select,-0.6541217665847089,183,183,183,0,clearly bottom,don't select,FALSE

@@ -1,0 +1,12 @@
+kpi,direction,icc
+CMJ: Jump Height (Flight Time),benefit,0.9836777412668167
+Drop Jump: Jump Height (Imp-Mom),benefit,0.9755938901291757
+Single-Leg Jump: Peak Power / BM,benefit,0.9607328907177444
+Single-Leg Jump: Concentric RPD / BM,benefit,0.9599223724388968
+CMJ: Concentric Mean Power / BM,benefit,0.9570767224661891
+Drop Jump: RSI (JH (Flight Time)/Contact Time),benefit,0.9504896630792097
+Single-Leg Jump: Concentric Impulse (Abs) / BM,benefit,0.8943776075125679
+Drop Jump: Concentric Impulse (Abs) / BM,benefit,0.8795015505937303
+CMJ: Concentric Duration,cost,0.8725692150688389
+CMJ: Flight Time:Contraction Time,benefit,0.852201776844679
+CMJ: Eccentric Peak Force / BM,benefit,0.7687643646482251

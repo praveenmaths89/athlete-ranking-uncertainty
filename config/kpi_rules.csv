@@ -1,0 +1,8 @@
+pattern,rule,rationale
+^Start of|^Auto Weight|^Baseline|Drop Height|Effective Drop|^Drop Landing$|^Takeoff$|^Landing$|Velocity at Contact,exclude,Recording time points or protocol settings (velocity at contact is set by the drop height) - not athlete performance
+/ BW$,exclude,Duplicate of the same quantity per kg body mass (/ BM)
+Eccentric:Concentric|Contraction Time:Eccentric Duration|FlightTime:Eccentric Duration|Impulse-100ms:Concentric Impulse|Impulse-50ms:Concentric Impulse|P2 Concentric Impulse:P1|Countermovement Depth,exclude,Movement-strategy measure without an agreed better direction
+Landing,exclude,Landing force partly reflects jump height so its better direction is unclear (decision of 2026-09-29)
+RSI|Flight Time:Contraction Time,benefit,Reactive strength: higher output per unit time is better
+Contraction Time$|Duration$|Contact Time$|Movement Start to|Time to,cost,Shorter time = faster force production
+.,benefit,Higher output = better performance (default)

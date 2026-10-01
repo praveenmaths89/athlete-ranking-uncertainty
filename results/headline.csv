@@ -1,0 +1,2 @@
+athletes,athletes_multi_visit,attempts_removed_qc,kpis,winner,k_main,select_age,retest_age,dont_select_age,clearly_top_formal_age,expected_wrong_selections_lower_bound_age,p_rank7_above_rank12,heldout_spearman_longitudinal,heldout_spearman_latest_visit,median_age_topk_current,median_age_topk_age,topk_overlap_current_vs_age,hidden_talent,retention_auc_age,retention_p_age
+183,79,42,11,spotis_equal,37,29,16,138,16,2.22,0.805,0.6200649040052091,0.6421195026690335,20.5,13.6,14,22,0.4946208344266612,0.9041279225794816

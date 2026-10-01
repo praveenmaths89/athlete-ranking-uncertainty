@@ -1,0 +1,7 @@
+version,share,k,select,retest_grey_zone,dont_select,clearly_top_formal,median_rank_range_width,expected_wrong_selections_lower_bound
+current,10%,19,12,15,156,7,45,2.085
+current,20%,37,30,14,139,16,45,2.1950000000000003
+current,30%,55,48,16,119,33,45,2.5799999999999996
+age,10%,19,15,9,159,9,65,1.37
+age,20%,37,29,16,138,16,65,2.22
+age,30%,55,45,22,116,24,65,3.375

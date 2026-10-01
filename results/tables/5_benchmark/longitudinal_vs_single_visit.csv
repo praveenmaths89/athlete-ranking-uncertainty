@@ -1,0 +1,4 @@
+test,version,longitudinal,latest_visit_only
+B: held-out visit (main evidence),current,0.7905923544219703,0.7713494684105454
+B: held-out visit (main evidence),age,0.6200649040052091,0.6421195026690335
+A: simulation (supportive),age,0.8148266807747908,0.8003642593025453
