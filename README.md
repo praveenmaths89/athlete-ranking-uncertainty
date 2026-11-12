@@ -9,14 +9,32 @@ and a select / borderline / do-not-select decision).
 
 ## Run
 
-1. Open `R_pipeline.Rproj` in RStudio.
-2. Install packages once:
-   `install.packages(c("tidyverse", "here", "data.table", "gamlss", "lme4", "csranks", "writexl", "gt", "ragg", "MASS"))`
-3. Run `ranking.R` top to bottom (about 40 minutes; seed 2026). For a 2-minute test run set
-   `RANKING_MODE=quick` in `.Renviron`.
+1. Open `R_pipeline.Rproj` in RStudio (or run from the repository root).
+2. Install packages once: `Rscript install_packages.R` (installs the versions listed in
+   `packages.csv`; the full environment of the paper run is in `results/session_info.txt`).
+3. Run the single script `Rscript ranking.R` (about 11–40 minutes depending on the machine; seed 2026).
+   For a 2-minute test run set `RANKING_MODE=quick` in `.Renviron`.
 
-The analysis starts from the de-identified `results/public/trials.csv`, so every result can be
-reproduced from this repository.
+Section 1 (data extraction) runs only if the private VALD ForceDecks export is available
+(`VALD_EXPORT_DIR`, default `data/private_export/`). It rebuilds the de-identified trial file and,
+if the result matches the released `results/public/trials.csv`, keeps the released file. Without the
+export, Section 1 is skipped and the analysis starts from `results/public/trials.csv`, so every
+result can be reproduced from this repository.
+
+### Paper
+
+The manuscript (SSAC 2027, Paper ID 268) is generated from the pipeline outputs:
+
+```
+Rscript ranking.R                                         # writes results/paper/ (numbers, tables, figures)
+python3 paper/build_docx.py /path/to/SSAC27_paper_template.docx   # needs python-docx, lxml, pandoc
+soffice --headless --convert-to pdf --outdir paper paper/SSAC27_268_Beyond_the_Rank_Order.docx
+```
+
+`paper/manuscript.txt` is the text; every number in it is a `{{key}}` filled from
+`results/paper/numbers.csv`. The official conference Word template is not included in this
+repository. `paper/references.json` holds Crossref metadata for the references (`paper/dois.txt`).
+`results/reproducibility_runs.csv` records the reruns on different platforms and package versions.
 
 ## Data
 
@@ -40,6 +58,7 @@ size-independent metrics are included. Columns are described in `results/public/
 | 6 | Benchmark 15 ranking methods: simulation (A) and held-out visit (B) | `results/tables/5_benchmark/` |
 | 7 | Uncertainty: bootstrap rank ranges, P(top k) for k = 10/20/30%, decision groups, expected wrong selections (lower bound), exploratory retention check | `results/tables/6_uncertainty/` |
 | 8 | Headline numbers, figures, Table 1, Excel workbook | `results/` |
+| 9 | Paper assets: every number, table and figure used in the manuscript | `results/paper/` |
 
 ## Main outputs
 
@@ -58,4 +77,10 @@ size-independent metrics are included. Columns are described in `results/public/
 |---|---|
 | `ranking.R` | The analysis, in numbered sections |
 | `R/functions.R` | Quality control, LMS age models, mixed model, 15 ranking methods, simulation |
+| `install_packages.R`, `packages.csv` | Package installation and versions |
+| `paper/` | Manuscript source, Word builder, references, generated `.docx` and `.pdf` |
 | `config/kpi_rules.csv` | Variable dictionary: excluded metrics and better direction; edit to reuse the framework with another test battery |
+
+## License
+
+Code is released under the MIT License (see `LICENSE`).

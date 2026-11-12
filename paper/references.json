@@ -1,0 +1,1082 @@
+{
+ "cole1992": {
+  "doi": "10.1002/sim.4780111005",
+  "type": "journal-article",
+  "title": "Smoothing reference centile curves: The LMS method and penalized likelihood",
+  "authors": [
+   [
+    "Cole",
+    "T. J."
+   ],
+   [
+    "Green",
+    "P. J."
+   ]
+  ],
+  "year": 1992,
+  "container": "Statistics in Medicine",
+  "volume": "11",
+  "issue": "10",
+  "page": "1305-1319",
+  "publisher": "Wiley"
+ },
+ "rigby2005": {
+  "doi": "10.1111/j.1467-9876.2005.00510.x",
+  "type": "journal-article",
+  "title": "Generalized Additive Models for Location, Scale and Shape",
+  "authors": [
+   [
+    "Rigby",
+    "R. A."
+   ],
+   [
+    "Stasinopoulos",
+    "D. M."
+   ]
+  ],
+  "year": 2005,
+  "container": "Journal of the Royal Statistical Society Series C: Applied Statistics",
+  "volume": "54",
+  "issue": "3",
+  "page": "507-554",
+  "publisher": "Oxford University Press (OUP)"
+ },
+ "stasinopoulos2007": {
+  "doi": "10.18637/jss.v023.i07",
+  "type": "journal-article",
+  "title": "Generalized Additive Models for Location Scale and Shape (GAMLSS) in\n                    <i>R</i>",
+  "authors": [
+   [
+    "Stasinopoulos",
+    "D. Mikis"
+   ],
+   [
+    "Rigby",
+    "Robert A."
+   ]
+  ],
+  "year": 2007,
+  "container": "Journal of Statistical Software",
+  "volume": "23",
+  "issue": "7",
+  "page": "",
+  "publisher": "Foundation for Open Access Statistic"
+ },
+ "koo2016": {
+  "doi": "10.1016/j.jcm.2016.02.012",
+  "type": "journal-article",
+  "title": "A Guideline of Selecting and Reporting Intraclass Correlation Coefficients for Reliability Research",
+  "authors": [
+   [
+    "Koo",
+    "Terry K."
+   ],
+   [
+    "Li",
+    "Mae Y."
+   ]
+  ],
+  "year": 2016,
+  "container": "Journal of Chiropractic Medicine",
+  "volume": "15",
+  "issue": "2",
+  "page": "155-163",
+  "publisher": "National University of Health Sciences"
+ },
+ "weir2005": {
+  "doi": "10.1519/15184.1",
+  "type": "journal-article",
+  "title": "Quantifying Test-Retest Reliability Using the Intraclass Correlation Coefficient and the SEM",
+  "authors": [
+   [
+    "Weir",
+    "Joseph P."
+   ]
+  ],
+  "year": 2005,
+  "container": "The Journal of Strength and Conditioning Research",
+  "volume": "19",
+  "issue": "1",
+  "page": "231-240",
+  "publisher": "Ovid Technologies (Wolters Kluwer Health)"
+ },
+ "dormann2013": {
+  "doi": "10.1111/j.1600-0587.2012.07348.x",
+  "type": "journal-article",
+  "title": "Collinearity: a review of methods to deal with it and a simulation study evaluating their performance",
+  "authors": [
+   [
+    "Dormann",
+    "Carsten F."
+   ],
+   [
+    "Elith",
+    "Jane"
+   ],
+   [
+    "Bacher",
+    "Sven"
+   ],
+   [
+    "Buchmann",
+    "Carsten"
+   ],
+   [
+    "Carl",
+    "Gudrun"
+   ],
+   [
+    "Carré",
+    "Gabriel"
+   ],
+   [
+    "Marquéz",
+    "Jaime R. García"
+   ],
+   [
+    "Gruber",
+    "Bernd"
+   ],
+   [
+    "Lafourcade",
+    "Bruno"
+   ],
+   [
+    "Leitão",
+    "Pedro J."
+   ],
+   [
+    "Münkemüller",
+    "Tamara"
+   ],
+   [
+    "McClean",
+    "Colin"
+   ],
+   [
+    "Osborne",
+    "Patrick E."
+   ],
+   [
+    "Reineking",
+    "Björn"
+   ],
+   [
+    "Schröder",
+    "Boris"
+   ],
+   [
+    "Skidmore",
+    "Andrew K."
+   ],
+   [
+    "Zurell",
+    "Damaris"
+   ],
+   [
+    "Lautenbach",
+    "Sven"
+   ]
+  ],
+  "year": 2013,
+  "container": "Ecography",
+  "volume": "36",
+  "issue": "1",
+  "page": "27-46",
+  "publisher": "Wiley"
+ },
+ "mogstad2024": {
+  "doi": "10.1093/restud/rdad006",
+  "type": "journal-article",
+  "title": "Inference for Ranks with Applications to Mobility across Neighbourhoods and Academic Achievement across Countries",
+  "authors": [
+   [
+    "Mogstad",
+    "Magne"
+   ],
+   [
+    "Romano",
+    "Joseph P"
+   ],
+   [
+    "Shaikh",
+    "Azeem M"
+   ],
+   [
+    "Wilhelm",
+    "Daniel"
+   ]
+  ],
+  "year": 2024,
+  "container": "Review of Economic Studies",
+  "volume": "91",
+  "issue": "1",
+  "page": "476-518",
+  "publisher": "Oxford University Press (OUP)"
+ },
+ "hwang1981": {
+  "doi": "10.1007/978-3-642-48318-9",
+  "type": "book",
+  "title": "Multiple Attribute Decision Making",
+  "authors": [
+   [
+    "Hwang",
+    "Ching-Lai"
+   ],
+   [
+    "Yoon",
+    "Kwangsun"
+   ]
+  ],
+  "year": 1981,
+  "container": "Lecture Notes in Economics and Mathematical Systems",
+  "volume": "",
+  "issue": "",
+  "page": "",
+  "publisher": "Springer Berlin Heidelberg"
+ },
+ "dezert2020": {
+  "doi": "10.23919/FUSION45008.2020.9190347",
+  "type": "proceedings-article",
+  "title": "The SPOTIS Rank Reversal Free Method for Multi-Criteria Decision-Making Support",
+  "authors": [
+   [
+    "Dezert",
+    "Jean"
+   ],
+   [
+    "Tchamova",
+    "Albena"
+   ],
+   [
+    "Han",
+    "Deqiang"
+   ],
+   [
+    "Tacnet",
+    "Jean-Marc"
+   ]
+  ],
+  "year": 2020,
+  "container": "2020 IEEE 23rd International Conference on Information Fusion (FUSION)",
+  "volume": "",
+  "issue": "",
+  "page": "1-8",
+  "publisher": "IEEE"
+ },
+ "stevic2020": {
+  "doi": "10.1016/j.cie.2019.106231",
+  "type": "journal-article",
+  "title": "Sustainable supplier selection in healthcare industries using a new MCDM method: Measurement of alternatives and ranking according to COmpromise solution (MARCOS)",
+  "authors": [
+   [
+    "Stević",
+    "Željko"
+   ],
+   [
+    "Pamučar",
+    "Dragan"
+   ],
+   [
+    "Puška",
+    "Adis"
+   ],
+   [
+    "Chatterjee",
+    "Prasenjit"
+   ]
+  ],
+  "year": 2020,
+  "container": "Computers &amp; Industrial Engineering",
+  "volume": "140",
+  "issue": "",
+  "page": "106231",
+  "publisher": "Elsevier BV"
+ },
+ "brans1985": {
+  "doi": "10.1287/mnsc.31.6.647",
+  "type": "journal-article",
+  "title": "Note—A Preference Ranking Organisation Method",
+  "authors": [
+   [
+    "Brans",
+    "J. P."
+   ],
+   [
+    "Vincke",
+    "Ph."
+   ]
+  ],
+  "year": 1985,
+  "container": "Management Science",
+  "volume": "31",
+  "issue": "6",
+  "page": "647-656",
+  "publisher": "Institute for Operations Research and the Management Sciences (INFORMS)"
+ },
+ "keshavarz2021": {
+  "doi": "10.3390/sym13040525",
+  "type": "journal-article",
+  "title": "Determination of Objective Weights Using a New Method Based on the Removal Effects of Criteria (MEREC)",
+  "authors": [
+   [
+    "Keshavarz-Ghorabaee",
+    "Mehdi"
+   ],
+   [
+    "Amiri",
+    "Maghsoud"
+   ],
+   [
+    "Zavadskas",
+    "Edmundas Kazimieras"
+   ],
+   [
+    "Turskis",
+    "Zenonas"
+   ],
+   [
+    "Antucheviciene",
+    "Jurgita"
+   ]
+  ],
+  "year": 2021,
+  "container": "Symmetry",
+  "volume": "13",
+  "issue": "4",
+  "page": "525",
+  "publisher": "MDPI AG"
+ },
+ "morris2019": {
+  "doi": "10.1002/sim.8086",
+  "type": "journal-article",
+  "title": "Using simulation studies to evaluate statistical methods",
+  "authors": [
+   [
+    "Morris",
+    "Tim P."
+   ],
+   [
+    "White",
+    "Ian R."
+   ],
+   [
+    "Crowther",
+    "Michael J."
+   ]
+  ],
+  "year": 2019,
+  "container": "Statistics in Medicine",
+  "volume": "38",
+  "issue": "11",
+  "page": "2074-2102",
+  "publisher": "Wiley"
+ },
+ "jaric2002": {
+  "doi": "10.2165/00007256-200232100-00002",
+  "type": "journal-article",
+  "title": "Muscle Strength Testing",
+  "authors": [
+   [
+    "Jaric",
+    "Slobodan"
+   ]
+  ],
+  "year": 2002,
+  "container": "Sports Medicine",
+  "volume": "32",
+  "issue": "10",
+  "page": "615-631",
+  "publisher": "Springer Science and Business Media LLC",
+  "subtitle": "Use of Normalisation for Body Size"
+ },
+ "bates2015": {
+  "doi": "10.18637/jss.v067.i01",
+  "type": "journal-article",
+  "title": "Fitting Linear Mixed-Effects Models Using\n                    <b>lme4</b>",
+  "authors": [
+   [
+    "Bates",
+    "Douglas"
+   ],
+   [
+    "Mächler",
+    "Martin"
+   ],
+   [
+    "Bolker",
+    "Ben"
+   ],
+   [
+    "Walker",
+    "Steve"
+   ]
+  ],
+  "year": 2015,
+  "container": "Journal of Statistical Software",
+  "volume": "67",
+  "issue": "1",
+  "page": "",
+  "publisher": "Foundation for Open Access Statistic"
+ },
+ "cobley2009": {
+  "doi": "10.2165/00007256-200939030-00005",
+  "type": "journal-article",
+  "title": "Annual Age-Grouping and Athlete Development",
+  "authors": [
+   [
+    "Cobley",
+    "Stephen"
+   ],
+   [
+    "Baker",
+    "Joseph"
+   ],
+   [
+    "Wattie",
+    "Nick"
+   ],
+   [
+    "McKenna",
+    "Jim"
+   ]
+  ],
+  "year": 2009,
+  "container": "Sports Medicine",
+  "volume": "39",
+  "issue": "3",
+  "page": "235-256",
+  "publisher": "Springer Science and Business Media LLC",
+  "subtitle": "A Meta-Analytical Review of Relative Age Effects in Sport"
+ },
+ "vaeyens2008": {
+  "doi": "10.2165/00007256-200838090-00001",
+  "type": "journal-article",
+  "title": "Talent Identification and Development Programmes in Sport",
+  "authors": [
+   [
+    "Vaeyens",
+    "Roel"
+   ],
+   [
+    "Lenoir",
+    "Matthieu"
+   ],
+   [
+    "Williams",
+    "A Mark"
+   ],
+   [
+    "Philippaerts",
+    "Renaat M"
+   ]
+  ],
+  "year": 2008,
+  "container": "Sports Medicine",
+  "volume": "38",
+  "issue": "9",
+  "page": "703-714",
+  "publisher": "Springer Science and Business Media LLC",
+  "subtitle": "Current Models and Future Directions"
+ },
+ "johnston2018": {
+  "doi": "10.1007/s40279-017-0803-2",
+  "type": "journal-article",
+  "title": "Talent Identification in Sport: A Systematic Review",
+  "authors": [
+   [
+    "Johnston",
+    "Kathryn"
+   ],
+   [
+    "Wattie",
+    "Nick"
+   ],
+   [
+    "Schorer",
+    "Jörg"
+   ],
+   [
+    "Baker",
+    "Joseph"
+   ]
+  ],
+  "year": 2018,
+  "container": "Sports Medicine",
+  "volume": "48",
+  "issue": "1",
+  "page": "97-109",
+  "publisher": "Springer Science and Business Media LLC"
+ },
+ "malina2015": {
+  "doi": "10.1136/bjsports-2015-094623",
+  "type": "journal-article",
+  "title": "Biological maturation of youth athletes: assessment and implications",
+  "authors": [
+   [
+    "Malina",
+    "Robert M"
+   ],
+   [
+    "Rogol",
+    "Alan D"
+   ],
+   [
+    "Cumming",
+    "Sean P"
+   ],
+   [
+    "Coelho e Silva",
+    "Manuel J"
+   ],
+   [
+    "Figueiredo",
+    "Antonio J"
+   ]
+  ],
+  "year": 2015,
+  "container": "British Journal of Sports Medicine",
+  "volume": "49",
+  "issue": "13",
+  "page": "852-859",
+  "publisher": "BMJ"
+ },
+ "lloyd2012": {
+  "doi": "10.1519/SSC.0b013e31825760ea",
+  "type": "journal-article",
+  "title": "The Youth Physical Development Model",
+  "authors": [
+   [
+    "Lloyd",
+    "Rhodri S."
+   ],
+   [
+    "Oliver",
+    "Jon L."
+   ]
+  ],
+  "year": 2012,
+  "container": "Strength &amp; Conditioning Journal",
+  "volume": "34",
+  "issue": "3",
+  "page": "61-72",
+  "publisher": "Ovid Technologies (Wolters Kluwer Health)"
+ },
+ "claudino2017": {
+  "doi": "10.1016/j.jsams.2016.08.011",
+  "type": "journal-article",
+  "title": "The countermovement jump to monitor neuromuscular status: A meta-analysis",
+  "authors": [
+   [
+    "Claudino",
+    "João Gustavo"
+   ],
+   [
+    "Cronin",
+    "John"
+   ],
+   [
+    "Mezêncio",
+    "Bruno"
+   ],
+   [
+    "McMaster",
+    "Daniel Travis"
+   ],
+   [
+    "McGuigan",
+    "Michael"
+   ],
+   [
+    "Tricoli",
+    "Valmor"
+   ],
+   [
+    "Amadio",
+    "Alberto Carlos"
+   ],
+   [
+    "Serrão",
+    "Julio Cerca"
+   ]
+  ],
+  "year": 2017,
+  "container": "Journal of Science and Medicine in Sport",
+  "volume": "20",
+  "issue": "4",
+  "page": "397-402",
+  "publisher": "Elsevier BV"
+ },
+ "hopkins2000": {
+  "doi": "10.2165/00007256-200030010-00001",
+  "type": "journal-article",
+  "title": "Measures of Reliability in Sports Medicine and Science",
+  "authors": [
+   [
+    "Hopkins",
+    "Will G."
+   ]
+  ],
+  "year": 2000,
+  "container": "Sports Medicine",
+  "volume": "30",
+  "issue": "1",
+  "page": "1-15",
+  "publisher": "Springer Science and Business Media LLC"
+ },
+ "goldstein1996": {
+  "doi": "10.2307/2983325",
+  "type": "journal-article",
+  "title": "League Tables and Their Limitations: Statistical Issues in Comparisons of Institutional Performance",
+  "authors": [
+   [
+    "Goldstein",
+    "Harvey"
+   ],
+   [
+    "Spiegelhalter",
+    "David J."
+   ]
+  ],
+  "year": 1996,
+  "container": "Journal of the Royal Statistical Society. Series A (Statistics in Society)",
+  "volume": "159",
+  "issue": "3",
+  "page": "385-443",
+  "publisher": "Oxford University Press (OUP)"
+ },
+ "hall2009": {
+  "doi": "10.1214/09-AOS699",
+  "type": "journal-article",
+  "title": "Using the bootstrap to quantify the authority of an empirical ranking",
+  "authors": [
+   [
+    "Hall",
+    "Peter"
+   ],
+   [
+    "Miller",
+    "Hugh"
+   ]
+  ],
+  "year": 2009,
+  "container": "The Annals of Statistics",
+  "volume": "37",
+  "issue": "6B",
+  "page": "3929-3959",
+  "publisher": "Institute of Mathematical Statistics"
+ },
+ "efron1993": {
+  "doi": "10.1201/9780429246593",
+  "type": "book",
+  "title": "An Introduction to the Bootstrap",
+  "authors": [
+   [
+    "Efron",
+    "Bradley"
+   ],
+   [
+    "Tibshirani",
+    "R.J."
+   ]
+  ],
+  "year": 1994,
+  "container": "",
+  "volume": "",
+  "issue": "",
+  "page": "",
+  "publisher": "Chapman and Hall/CRC"
+ },
+ "till2020": {
+  "doi": "10.3389/fpsyg.2020.00664",
+  "type": "journal-article",
+  "title": "Challenges and [Possible] Solutions to Optimizing Talent Identification and Development in Sport",
+  "authors": [
+   [
+    "Till",
+    "Kevin"
+   ],
+   [
+    "Baker",
+    "Joseph"
+   ]
+  ],
+  "year": 2020,
+  "container": "Frontiers in Psychology",
+  "volume": "11",
+  "issue": "",
+  "page": "664",
+  "publisher": "Frontiers Media SA"
+ },
+ "sarmento2018": {
+  "doi": "10.1007/s40279-017-0851-7",
+  "type": "journal-article",
+  "title": "Talent Identification and Development in Male Football: A Systematic Review",
+  "authors": [
+   [
+    "Sarmento",
+    "Hugo"
+   ],
+   [
+    "Anguera",
+    "M. Teresa"
+   ],
+   [
+    "Pereira",
+    "Antonino"
+   ],
+   [
+    "Araújo",
+    "Duarte"
+   ]
+  ],
+  "year": 2018,
+  "container": "Sports Medicine",
+  "volume": "48",
+  "issue": "4",
+  "page": "907-931",
+  "publisher": "Springer Science and Business Media LLC"
+ },
+ "jarvelin2002": {
+  "doi": "10.1145/582415.582418",
+  "type": "journal-article",
+  "title": "Cumulated gain-based evaluation of IR techniques",
+  "authors": [
+   [
+    "Järvelin",
+    "Kalervo"
+   ],
+   [
+    "Kekäläinen",
+    "Jaana"
+   ]
+  ],
+  "year": 2002,
+  "container": "ACM Transactions on Information Systems",
+  "volume": "20",
+  "issue": "4",
+  "page": "422-446",
+  "publisher": "Association for Computing Machinery (ACM)"
+ },
+ "zhu2020": {
+  "doi": "10.1155/2020/3564835",
+  "type": "journal-article",
+  "title": "Effectiveness of Entropy Weight Method in Decision-Making",
+  "authors": [
+   [
+    "Zhu",
+    "Yuxin"
+   ],
+   [
+    "Tian",
+    "Dazuo"
+   ],
+   [
+    "Yan",
+    "Feng"
+   ]
+  ],
+  "year": 2020,
+  "container": "Mathematical Problems in Engineering",
+  "volume": "2020",
+  "issue": "",
+  "page": "1-5",
+  "publisher": "Wiley"
+ },
+ "mcmahon2018": {
+  "doi": "10.1519/SSC.0000000000000375",
+  "type": "journal-article",
+  "title": "Understanding the Key Phases of the Countermovement Jump Force-Time Curve",
+  "authors": [
+   [
+    "McMahon",
+    "John J."
+   ],
+   [
+    "Suchomel",
+    "Timothy J."
+   ],
+   [
+    "Lake",
+    "Jason P."
+   ],
+   [
+    "Comfort",
+    "Paul"
+   ]
+  ],
+  "year": 2018,
+  "container": "Strength &amp; Conditioning Journal",
+  "volume": "40",
+  "issue": "4",
+  "page": "96-106",
+  "publisher": "Ovid Technologies (Wolters Kluwer Health)"
+ },
+ "flanagan2008": {
+  "doi": "10.1519/SSC.0b013e318187e25b",
+  "type": "journal-article",
+  "title": "The Use of Contact Time and the Reactive Strength Index to Optimize Fast Stretch-Shortening Cycle Training",
+  "authors": [
+   [
+    "Flanagan",
+    "Eamonn P"
+   ],
+   [
+    "Comyns",
+    "Thomas M"
+   ]
+  ],
+  "year": 2008,
+  "container": "Strength &amp; Conditioning Journal",
+  "volume": "30",
+  "issue": "5",
+  "page": "32-38",
+  "publisher": "Ovid Technologies (Wolters Kluwer Health)"
+ },
+ "bergkamp2019": {
+  "doi": "10.1007/s40279-019-01113-w",
+  "type": "journal-article",
+  "title": "Methodological Issues in Soccer Talent Identification Research",
+  "authors": [
+   [
+    "Bergkamp",
+    "Tom L. G."
+   ],
+   [
+    "Niessen",
+    "A. Susan M."
+   ],
+   [
+    "den Hartigh",
+    "Ruud. J. R."
+   ],
+   [
+    "Frencken",
+    "Wouter G. P."
+   ],
+   [
+    "Meijer",
+    "Rob R."
+   ]
+  ],
+  "year": 2019,
+  "container": "Sports Medicine",
+  "volume": "49",
+  "issue": "9",
+  "page": "1317-1335",
+  "publisher": "Springer Science and Business Media LLC"
+ },
+ "williams2000": {
+  "doi": "10.1080/02640410050120041",
+  "type": "journal-article",
+  "title": "Talent identification and development in soccer",
+  "authors": [
+   [
+    "Williams",
+    "A. M."
+   ],
+   [
+    "Reilly",
+    "T."
+   ]
+  ],
+  "year": 2000,
+  "container": "Journal of Sports Sciences",
+  "volume": "18",
+  "issue": "9",
+  "page": "657-667",
+  "publisher": "Informa UK Limited"
+ },
+ "helsen2005": {
+  "doi": "10.1080/02640410400021310",
+  "type": "journal-article",
+  "title": "The relative age effect in youth soccer across Europe",
+  "authors": [
+   [
+    "Helsen",
+    "Werner F"
+   ],
+   [
+    "van Winckel",
+    "Jan"
+   ],
+   [
+    "Williams",
+    "A Mark"
+   ]
+  ],
+  "year": 2005,
+  "container": "Journal of Sports Sciences",
+  "volume": "23",
+  "issue": "6",
+  "page": "629-636",
+  "publisher": "Informa UK Limited"
+ },
+ "shrout1979": {
+  "doi": "10.1037/0033-2909.86.2.420",
+  "type": "journal-article",
+  "title": "Intraclass correlations: Uses in assessing rater reliability.",
+  "authors": [
+   [
+    "Shrout",
+    "Patrick E."
+   ],
+   [
+    "Fleiss",
+    "Joseph L."
+   ]
+  ],
+  "year": 1979,
+  "container": "Psychological Bulletin",
+  "volume": "86",
+  "issue": "2",
+  "page": "420-428",
+  "publisher": "American Psychological Association (APA)"
+ },
+ "atkinson1998": {
+  "doi": "10.2165/00007256-199826040-00002",
+  "type": "journal-article",
+  "title": "Statistical Methods For Assessing Measurement Error (Reliability) in Variables Relevant to Sports Medicine",
+  "authors": [
+   [
+    "Atkinson",
+    "Greg"
+   ],
+   [
+    "Nevill",
+    "Alan M."
+   ]
+  ],
+  "year": 1998,
+  "container": "Sports Medicine",
+  "volume": "26",
+  "issue": "4",
+  "page": "217-238",
+  "publisher": "Springer Science and Business Media LLC"
+ },
+ "robinson1991": {
+  "doi": "10.1214/ss/1177011926",
+  "type": "journal-article",
+  "title": "That BLUP is a Good Thing: The Estimation of Random Effects",
+  "authors": [
+   [
+    "Robinson",
+    "G. K."
+   ]
+  ],
+  "year": 1991,
+  "container": "Statistical Science",
+  "volume": "6",
+  "issue": "1",
+  "page": "15-32",
+  "publisher": "Institute of Mathematical Statistics"
+ },
+ "cumming2017": {
+  "doi": "10.1519/SSC.0000000000000281",
+  "type": "journal-article",
+  "title": "Bio-banding in Sport: Applications to Competition, Talent Identification, and Strength and Conditioning of Youth Athletes",
+  "authors": [
+   [
+    "Cumming",
+    "Sean P."
+   ],
+   [
+    "Lloyd",
+    "Rhodri S."
+   ],
+   [
+    "Oliver",
+    "Jon L."
+   ],
+   [
+    "Eisenmann",
+    "Joey C."
+   ],
+   [
+    "Malina",
+    "Robert M."
+   ]
+  ],
+  "year": 2017,
+  "container": "Strength &amp; Conditioning Journal",
+  "volume": "39",
+  "issue": "2",
+  "page": "34-47",
+  "publisher": "Ovid Technologies (Wolters Kluwer Health)"
+ },
+ "romann2015": {
+  "doi": "10.1371/journal.pone.0122988",
+  "type": "journal-article",
+  "title": "Relative Age Effects in Athletic Sprinting and Corrective Adjustments as a Solution for Their Removal",
+  "authors": [
+   [
+    "Romann",
+    "Michael"
+   ],
+   [
+    "Cobley",
+    "Stephen"
+   ]
+  ],
+  "year": 2015,
+  "container": "PLOS ONE",
+  "volume": "10",
+  "issue": "4",
+  "page": "e0122988",
+  "publisher": "Public Library of Science (PLoS)"
+ },
+ "hill2020": {
+  "doi": "10.1080/02640414.2019.1649524",
+  "type": "journal-article",
+  "title": "Relative age and maturation selection biases in academy football",
+  "authors": [
+   [
+    "Hill",
+    "Megan"
+   ],
+   [
+    "Scott",
+    "Sam"
+   ],
+   [
+    "Malina",
+    "Robert M"
+   ],
+   [
+    "McGee",
+    "Darragh"
+   ],
+   [
+    "Cumming",
+    "Sean P"
+   ]
+  ],
+  "year": 2020,
+  "container": "Journal of Sports Sciences",
+  "volume": "38",
+  "issue": "11-12",
+  "page": "1359-1367",
+  "publisher": "Informa UK Limited"
+ },
+ "mann2017": {
+  "doi": "10.1080/02640414.2016.1189588",
+  "type": "journal-article",
+  "title": "Age-ordered shirt numbering reduces the selection bias associated with the relative age effect",
+  "authors": [
+   [
+    "Mann",
+    "David L."
+   ],
+   [
+    "van Ginneken",
+    "Pleun J. M. A."
+   ]
+  ],
+  "year": 2017,
+  "container": "Journal of Sports Sciences",
+  "volume": "35",
+  "issue": "8",
+  "page": "784-790",
+  "publisher": "Informa UK Limited"
+ }
+}

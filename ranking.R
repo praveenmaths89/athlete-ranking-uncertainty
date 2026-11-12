@@ -2,13 +2,13 @@
 # Longitudinal multi-test athlete ranking
 # -----------------------------------------------------------------------------
 # Paper: "Beyond the Rank Order: Quantifying Uncertainty in Physical-Test
-#         Rankings for Youth Football Selection"
+#         Rankings for Football Player Selection" (MIT SSAC 2027, Soccer track)
 #
 # Run top to bottom in RStudio (open R_pipeline.Rproj first).
 # For a fast test run set RANKING_MODE=quick (e.g. in .Renviron).
 #
 #   0. Setup ............ packages, settings, output folders, plot style
-#   1. Data ............. private VALD tables -> de-identified trial file
+#   1. Data ............. private VALD export -> de-identified trial file (skipped if absent)
 #   2. Clean ............ remove impossible / inconsistent attempts and values
 #   3. Select KPIs ...... relevant, available, reliable, not redundant
 #   4. Score ............ current and age-relative (LMS) z-scores
@@ -16,6 +16,7 @@
 #   6. Benchmark ........ 15 rankers: simulation (A) and held-out visit (B)
 #   7. Uncertainty ...... bootstrap: rank ranges, P(top k), decisions, retention check
 #   8. Outputs .......... headline, Figure 1, Table 1, supplementary figures, Excel
+#   9. Paper assets ..... numbers, tables and figures read by paper/build_paper.R
 #
 # Sections 2-8 only read results/public/trials.csv, so anyone can reproduce
 # them from the public repository without the private VALD data.
@@ -39,6 +40,7 @@ quick <- Sys.getenv("RANKING_MODE") == "quick"
 
 settings <- list(
   sport        = "Football",
+  sport_label  = "Football Overall Data",  # sport name in the athlete-sport mapping
   gender       = "Male",
   battery      = c(CMJ = "CMJ", DJ = "Drop Jump", SLJ = "Single-Leg Jump"),
   max_jump_cm  = 80,                     # QC rule 1: physically impossible jump height
@@ -63,9 +65,9 @@ relative_units <- c("Second", "Millisecond", "Meter Per Second", "Meter Per Seco
                     "Watt Per Second Per Kilo", "Newton Second Per Kilo", "Centimeter",
                     "Meter", "Percent", "No Unit", "RSIModified")
 
-# Private VALD export (not public); set VALD_DATA_DIR in .Renviron. Without it, section 1 is
-# skipped and the analysis starts from the de-identified results/public/trials.csv
-data_dir <- Sys.getenv("VALD_DATA_DIR", here("data"))
+# Private VALD ForceDecks export (never public); set VALD_EXPORT_DIR in .Renviron. Without it,
+# section 1 is skipped and the analysis starts from the de-identified results/public/trials.csv
+export_dir <- Sys.getenv("VALD_EXPORT_DIR", here("data", "private_export"))
 
 # Output folders
 out <- list(public = "public", qc = "tables/1_quality_control", kpi = "tables/2_kpi_selection",
@@ -108,52 +110,71 @@ decision_labels  <- c("select" = "Select", "retest (grey zone)" = "Borderline (r
 set.seed(settings$seed)
 
 
-# ---- 1. Data: private tables -> de-identified trial file ----------------------
+# ---- 1. Data: private VALD export -> de-identified trial file -------------------
+# Runs only when the private ForceDecks export is present (VALD_EXPORT_DIR). It needs:
+#   data/raw/tests.csv     test ID, athlete ID, test type, recording time and UTC offset
+#   data/raw/trials.csv    one row per trial x metric (value, unit, limb)
+#   data/raw/profiles.csv  date of birth (read only to compute age; never written out)
+#   03_athlete_sports_gender_mapping.csv  sport and gender per athlete (names are not read)
+# Without the export the analysis starts from the committed results/public/trials.csv.
+# Re-running this step on the 2026-08-11 export reproduces that file exactly.
 
 public_trials_file <- file.path(out$public, "trials.csv")
 
-if (dir.exists(data_dir)) {
+if (dir.exists(file.path(export_dir, "data", "raw"))) {
 
-  tests_clean <- read_csv(file.path(data_dir, "processed", "tests_clean.csv"),
-                          col_select = c(profile_id, sport, gender, test_type, test_date, age_at_test),
-                          show_col_types = FALSE) |>
-    filter(sport == settings$sport, gender == settings$gender,
-           test_type %in% settings$battery, !is.na(age_at_test))
+  # Athletes in the sport and gender studied (only ID, sport and gender columns are read)
+  roster <- fread(file.path(export_dir, "03_athlete_sports_gender_mapping.csv"),
+                  select = c("profile_id", "sport", "gender")) |>
+    as_tibble() |>
+    filter(sport == settings$sport_label, gender == settings$gender) |>
+    distinct(profile_id)
+  dob <- fread(file.path(export_dir, "data", "raw", "profiles.csv"), select = c("profileId", "dateOfBirth")) |>
+    as_tibble() |>
+    mutate(dob = coalesce(as_date(ymd_hms(dateOfBirth, quiet = TRUE)), as_date(dateOfBirth)))
+
+  # Battery tests with the local test date (UTC + recorded offset; 330 min = IST) and age
+  tests <- read_csv(file.path(export_dir, "data", "raw", "tests.csv"), show_col_types = FALSE,
+                    col_select = c(testId, profileId, testType, recordedDateUtc, recordedDateOffset)) |>
+    filter(testType %in% names(settings$battery)) |>
+    mutate(test_type = settings$battery[testType],
+           test_date = as_date(ymd_hms(recordedDateUtc) + minutes(coalesce(recordedDateOffset, 330)))) |>
+    inner_join(roster, by = c(profileId = "profile_id")) |>
+    left_join(select(dob, profileId, dob), by = "profileId") |>
+    mutate(age_at_test = as.numeric(test_date - dob) / 365.25) |>
+    filter(!is.na(age_at_test))
 
   # Visits = days on which the athlete completed the whole battery
-  sessions <- tests_clean |>
-    summarise(age = mean(age_at_test), n_tests = n_distinct(test_type),
-              .by = c(profile_id, test_date)) |>
+  sessions <- tests |>
+    summarise(age = round(mean(age_at_test), 1), n_tests = n_distinct(test_type),
+              .by = c(profileId, test_date)) |>
     filter(n_tests == length(settings$battery))
 
   # Anonymous athlete codes; dates replaced by days since the first visit and by the
   # follow-up window (days from the first visit to the end of data collection)
   data_end <- max(sessions$test_date)
   athletes <- sessions |>
-    distinct(profile_id) |>
-    arrange(profile_id) |>
+    distinct(profileId) |>
+    arrange(profileId) |>
     mutate(athlete = sprintf("AID%03d", row_number()))
   sessions <- sessions |>
-    left_join(athletes, by = "profile_id") |>
+    left_join(athletes, by = "profileId") |>
     arrange(athlete, test_date) |>
     mutate(session = row_number(),
            days_from_first = as.numeric(test_date - first(test_date)),
            followup_window_days = as.numeric(data_end - first(test_date)), .by = athlete)
 
-  tests <- read_csv(file.path(data_dir, "raw", "tests.csv"), show_col_types = FALSE) |>
-    filter(testType %in% names(settings$battery)) |>
-    mutate(test_type = settings$battery[testType],
-           test_date = as_date(ymd_hms(recordedDateUtc) +                       # local test date;
-                               minutes(coalesce(recordedDateOffset, 330)))) |>   # 330 min = IST
-    inner_join(sessions, by = c(profileId = "profile_id", "test_date")) |>
+  tests <- tests |>
+    select(testId, profileId, test_type, test_date) |>
+    inner_join(sessions, by = c("profileId", "test_date")) |>
     mutate(test_no = dense_rank(testId), .by = c(athlete, session, test_type))
 
-  trials_raw <- fread(file.path(data_dir, "raw", "trials.csv"),
+  trials_raw <- fread(file.path(export_dir, "data", "raw", "trials.csv"),
                       select = c("testId", "trialId", "trialLimb", "resultName", "value", "limb", "unit")) |>
     as_tibble() |>
     filter(testId %in% tests$testId, limb == "Trial", unit %in% relative_units)
 
-  trials_raw |>
+  extracted <- trials_raw |>
     inner_join(select(tests, testId, athlete, session, days_from_first, followup_window_days, age, test_type, test_no),
                by = "testId") |>
     mutate(metric = paste(test_type, resultName, sep = ": "),
@@ -161,8 +182,25 @@ if (dir.exists(data_dir)) {
            trial  = dense_rank(trialId), .by = c(testId, trialLimb)) |>   # trials numbered in ID order
     select(athlete, session, days_from_first, followup_window_days, age, test_type, test_no, limb, trial,
            metric, unit, value) |>
-    arrange(athlete, session, metric, test_no, limb, trial) |>
-    write_csv(public_trials_file)
+    arrange(athlete, session, metric, test_no, limb, trial)
+  rm(trials_raw, roster, dob, athletes)   # identifiers leave memory before the analysis starts
+
+  # Keep the released file when the export reproduces it (to floating-point precision), so the
+  # public data do not change with the CSV writer's last digits; otherwise write the new file
+  same_as_released <- file.exists(public_trials_file) && {
+    released <- read_csv(public_trials_file, show_col_types = FALSE)
+    nrow(released) == nrow(extracted) &&
+      all(released$athlete == extracted$athlete, released$metric == extracted$metric,
+          released$trial == extracted$trial, released$age == extracted$age) &&
+      max(abs(released$value - extracted$value)) < 1e-9
+  }
+  if (same_as_released) {
+    message("Export reproduces the released ", public_trials_file, " (", nrow(extracted), " values): file kept.")
+  } else {
+    write_csv(extracted, public_trials_file)
+    message("Wrote a new de-identified ", public_trials_file)
+  }
+  rm(extracted)
 
   tribble(~column, ~description,
           "athlete", "Anonymous athlete code",
@@ -178,6 +216,8 @@ if (dir.exists(data_dir)) {
           "unit", "VALD unit",
           "value", "Trial value") |>
     save_table("public", "data_dictionary")
+} else {
+  message("Private VALD export not found: starting from the de-identified ", public_trials_file)
 }
 
 trials_all <- read_csv(public_trials_file, show_col_types = FALSE)
@@ -733,6 +773,251 @@ readme <- tibble(sheet = names(sheets),
                              "P(player #7 ranks above #12)",
                              "Exploratory: first-visit score of retested vs not retested athletes"))
 write_xlsx(c(list(README = readme), sheets), here("results", "athlete_ranking_results.xlsx"))
+
+# ---- 9. Paper assets ------------------------------------------------------------------------
+# Every number, table and figure in the SSAC manuscript is written here from the objects above,
+# so the paper contains no hand-typed results (paper/build_paper.R reads results/paper/).
+
+out$paper <- here("results", "paper")
+dir.create(out$paper, showWarnings = FALSE)
+fmt  <- \(x, d = 2) formatC(x, format = "f", digits = d, big.mark = ",")
+fint <- \(x) formatC(x, format = "d", big.mark = ",")
+
+# 9a. Cohort and data-flow descriptives
+attempt_counts <- trials_all |> distinct(across(all_of(attempt)))
+ranked_info    <- filter(athlete_info, athlete %in% athletes_main)
+visit_age      <- trials_z |> filter(athlete %in% athletes_main) |> distinct(athlete, session, age, days_from_first)
+followup       <- visit_age |> summarise(span = max(days_from_first), visits = n(), .by = athlete)
+qc             <- read_csv(file.path(out$qc, "qc_summary.csv"), show_col_types = FALSE)
+incomplete     <- read_csv(file.path(out$qc, "incomplete_attempts_excluded_from_ranking.csv"), show_col_types = FALSE)
+status_n       <- count(candidates, status)
+n_status       <- \(s) sum(status_n$n[str_detect(status_n$status, fixed(s))])
+
+cohort_table <- tibble(
+  Characteristic = c("Athletes with at least one full-battery visit", "Athletes ranked (all 11 KPIs estimable)",
+                     "Visits (full battery on one day), ranked athletes", "Athletes with 1 / 2 / 3+ visits",
+                     "Age at latest visit, median (IQR) [range], years", "Athletes under 18 at latest visit",
+                     "Follow-up of multi-visit athletes, median (IQR), days",
+                     "Jump attempts recorded (CMJ / DJ / SLJ)", "Attempts used for ranking"),
+  Value = c(fint(n_distinct(trials_all$athlete)), fint(n_main),
+            fint(nrow(distinct(visit_age, athlete, session))),
+            paste(sum(followup$visits == 1), sum(followup$visits == 2), sum(followup$visits >= 3), sep = " / "),
+            sprintf("%s (%s\u2013%s) [%s\u2013%s]", fmt(median(ranked_info$age_latest), 1),
+                    fmt(quantile(ranked_info$age_latest, 0.25), 1), fmt(quantile(ranked_info$age_latest, 0.75), 1),
+                    fmt(min(ranked_info$age_latest), 1), fmt(max(ranked_info$age_latest), 1)),
+            sprintf("%d (%.0f%%)", sum(ranked_info$age_latest < 18), 100 * mean(ranked_info$age_latest < 18)),
+            with(filter(followup, visits >= 2), sprintf("%s (%s\u2013%s)", fint(median(span)),
+                                                         fint(quantile(span, 0.25)), fint(quantile(span, 0.75)))),
+            sprintf("%s (%s / %s / %s)", fint(nrow(attempt_counts)),
+                    fint(sum(attempt_counts$test_type == "CMJ")), fint(sum(attempt_counts$test_type == "Drop Jump")),
+                    fint(sum(attempt_counts$test_type == "Single-Leg Jump"))),
+            fint(sum(ranked_info$attempts))))
+write_csv(cohort_table, file.path(out$paper, "table_cohort.csv"))
+
+# 9b. KPI table: reliability, weights and how much of the variance is between athletes
+W_age <- X$age
+kpi_weights <- tibble(kpi = selected, equal = weights_equal(W_age), entropy = weights_entropy(W_age),
+                      merec = weights_merec(W_age))
+vc_age <- filter(map_dfr(fits, \(f) f$varcomp, .id = "version"), version == "age")
+kpi_table <- kpis |>
+  left_join(kpi_weights, by = "kpi") |>
+  left_join(select(vc_age, kpi, sd_athlete, sd_visit, sd_trial), by = "kpi") |>
+  mutate(test = str_remove(kpi, ":.*"), metric = str_remove(kpi, "^.*?: "),
+         share_athlete = sd_athlete^2 / (sd_athlete^2 + sd_visit^2 + sd_trial^2))
+write_csv(transmute(kpi_table, Test = test, KPI = metric, Better = if_else(direction == "cost", "lower", "higher"),
+                    ICC = fmt(icc), `Between-athlete share` = fmt(share_athlete),
+                    `Entropy weight` = fmt(entropy, 3), `MEREC weight` = fmt(merec, 3)),
+          file.path(out$paper, "table_kpis.csv"))
+r_sel <- cor(as.matrix(first_age_z[selected]), use = "pairwise.complete.obs")
+
+# 9c. Benchmark table (15 methods)
+bench_table <- benchmark |>
+  transmute(Method = ranker_label(ranker), `Simulation Spearman` = fmt(sim_spearman, 3),
+            `Simulation NDCG@10` = fmt(sim_ndcg10, 3), `Held-out Spearman` = fmt(heldout_spearman, 3),
+            `Mean rank (A)` = fmt(`A: simulation`, 1), `Mean rank (B)` = fmt(`B: held-out visit`, 1),
+            `Overall mean rank` = fmt(overall_mean_rank, 2))
+write_csv(bench_table, file.path(out$paper, "table_benchmark.csv"))
+test_a_by_truth <- test_a_summary |> filter(input == "longitudinal") |>
+  summarise(min = min(spearman), max = max(spearman), .by = truth)
+write_csv(test_a_by_truth, file.path(out$paper, "test_a_by_truth.csv"))
+
+# 9d. Selection table (Table 1 of the abstract, both versions)
+sel_table <- selection |>
+  transmute(Ranking = if_else(version == "age", "Age-adjusted", "Current (not age-adjusted)"),
+            `Cut-off` = paste("Top", share), Places = k, Select = select, Borderline = retest_grey_zone,
+            `Do not select` = dont_select, `Clearly top (95% set)` = clearly_top_formal,
+            `Median 95% range width` = median_rank_range_width,
+            `Expected wrong selections (≥)` = fmt(expected_wrong_selections_lower_bound, 1)) |>
+  arrange(desc(Ranking == "Age-adjusted"))
+write_csv(sel_table, file.path(out$paper, "table_selection.csv"))
+sel_table |> filter(Ranking == "Age-adjusted") |> select(-Ranking) |>
+  write_csv(file.path(out$paper, "table_selection_age.csv"))
+
+# 9e. Named numbers used in the text
+others <- filter(benchmark, ranker != "topsis_entropy")
+rank_width_top <- with(filter(athlete_report, age_rank <= k_top), median(age_rank_upper - age_rank_lower))
+num <- c(
+  n_trial_values = fint(nrow(trials_all)), n_metrics_recorded = fint(n_distinct(trials_all$metric)),
+  n_athletes_all = fint(n_distinct(trials_all$athlete)), n_attempts_all = fint(nrow(attempt_counts)),
+  n_visits_all = fint(nrow(distinct(trials_all, athlete, session))),
+  age_min_all = fmt(min(trials_all$age), 1), age_max_all = fmt(max(trials_all$age), 1),
+  n_ranked = fint(n_main), n_multi_visit = fint(length(multi_visit)), n_attempts_ranked = fint(sum(ranked_info$attempts)),
+  age_median = fmt(median(ranked_info$age_latest), 1), age_min = fmt(min(ranked_info$age_latest), 1),
+  age_max = fmt(max(ranked_info$age_latest), 1), n_under18 = fint(sum(ranked_info$age_latest < 18)),
+  pct_under18 = fmt(100 * mean(ranked_info$age_latest < 18), 0),
+  qc_removed = fint(nrow(removed)), qc_impossible = fint(sum(qc$removed_impossible)),
+  qc_inconsistent = fint(sum(qc$removed_inconsistent)),
+  qc_pct_cmj = fmt(qc$percent_removed[qc$test_type == "CMJ"], 1),
+  qc_pct_dj = fmt(qc$percent_removed[qc$test_type == "Drop Jump"], 1),
+  qc_pct_slj = fmt(qc$percent_removed[qc$test_type == "Single-Leg Jump"], 1),
+  values_removed = fint(sum(value_qc$removed)), incomplete_excluded = fint(sum(incomplete$incomplete_excluded)),
+  n_candidates = fint(nrow(candidates)), n_excl_rule = fint(n_status("not a performance KPI")),
+  n_excl_coverage = fint(n_status("coverage")), n_excl_unstable = fint(n_status("unstable")),
+  n_excl_reliability = fint(n_status("reliability")), n_excl_redundant = fint(n_status("redundant")),
+  n_pool = fint(nrow(pool)), n_kpis = fint(length(selected)),
+  icc_min = fmt(min(kpis$icc)), icc_max = fmt(max(kpis$icc)),
+  max_abs_r = fmt(max(abs(r_sel[upper.tri(r_sel)])), 2),
+  share_athlete_min = fmt(min(kpi_table$share_athlete)), share_athlete_max = fmt(max(kpi_table$share_athlete)),
+  n_slope_kept_age = fint(sum(vc_age$slope_kept)),
+  n_sim = fint(settings$n_sim), n_boot = fint(settings$n_boot),
+  winner_label = ranker_label(winner),
+  sim_rho_others_min = fmt(min(others$sim_spearman)), sim_rho_others_max = fmt(max(others$sim_spearman)),
+  sim_rho_winner = fmt(benchmark$sim_spearman[1], 3),
+  sim_rho_topsis_entropy = fmt(benchmark$sim_spearman[benchmark$ranker == "topsis_entropy"]),
+  heldout_rho_min = fmt(min(benchmark$heldout_spearman)), heldout_rho_max = fmt(max(benchmark$heldout_spearman)),
+  heldout_best_label = ranker_label(benchmark$ranker[which.max(benchmark$heldout_spearman)]),
+  ndcg_winner = fmt(benchmark$sim_ndcg10[1]),
+  entropy_icc_spearman = fmt(cor(kpi_table$entropy, kpi_table$icc, method = "spearman")),
+  entropy_w_max_kpi = kpi_table$kpi[which.max(kpi_table$entropy)], entropy_w_max = fmt(max(kpi_table$entropy), 3),
+  entropy_w_min_kpi = kpi_table$kpi[which.min(kpi_table$entropy)], entropy_w_min = fmt(min(kpi_table$entropy), 3),
+  long_b_age = fmt(gain_b$longitudinal), latest_b_age = fmt(gain_b$latest_visit_only),
+  long_b_cur = fmt(filter(longitudinal_gain, str_detect(test, "^B"), version == "current")$longitudinal),
+  latest_b_cur = fmt(filter(longitudinal_gain, str_detect(test, "^B"), version == "current")$latest_visit_only),
+  long_a = fmt(filter(longitudinal_gain, str_detect(test, "^A"))$longitudinal),
+  latest_a = fmt(filter(longitudinal_gain, str_detect(test, "^A"))$latest_visit_only),
+  n_heldout = fint(test_b$athletes_compared[1]),
+  k_main = fint(k_top), topk_overlap = fint(headline$topk_overlap_current_vs_age),
+  median_age_topk_current = fmt(headline$median_age_topk_current, 1), median_age_topk_age = fmt(headline$median_age_topk_age, 1),
+  rank_cor_current_age = fmt(cor(athlete_report$current_rank, athlete_report$age_rank, method = "spearman")),
+  hidden_talent = fint(headline$hidden_talent),
+  select_20 = fint(main_sel$select), border_20 = fint(main_sel$retest_grey_zone), reject_20 = fint(main_sel$dont_select),
+  clearly_top_20 = fint(main_sel$clearly_top_formal), wrong_20 = fmt(main_sel$expected_wrong_selections_lower_bound, 1),
+  range_width_median = fint(main_sel$median_rank_range_width), range_width_top = fint(rank_width_top),
+  pair_rank_a = fint(example$rank_a), pair_rank_b = fint(example$rank_b), pair_p = fmt(example$p_a_ranks_above_b),
+  ret_n = fint(ret_age$athletes), ret_retested = fint(ret_age$n_retested), ret_auc = fmt(ret_age$auc),
+  ret_p = fmt(ret_age$wilcoxon_p))
+write_csv(enframe(num, name = "key", value = "value"), file.path(out$paper, "numbers.csv"))
+
+# 9f. Figures for the manuscript: no in-figure titles (the Word caption carries the message)
+no_title <- \(p) p + labs(title = NULL)
+save_paper_fig <- function(plot, name, width, height) {
+  ggsave(file.path(out$paper, paste0(name, ".png")), plot, width = width, height = height, dpi = 600,
+         bg = "white", device = ragg::agg_png)
+}
+save_paper_fig(no_title(fig1), "fig1_rank_ranges", 6.5, 4.6)
+
+bench_long <- benchmark |>
+  mutate(label = fct_reorder(ranker_label(ranker), -overall_mean_rank)) |>
+  select(label, `A. Simulation: vs true level` = sim_spearman,
+         `B. Held-out visit: vs unseen visit` = heldout_spearman) |>
+  pivot_longer(-label) |>
+  mutate(weight = str_extract(label, "equal|entropy|MEREC"))
+fig2 <- ggplot(bench_long, aes(value, label, colour = weight, shape = weight)) +
+  geom_point(size = 2) +
+  facet_wrap(~name, scales = "free_x") +
+  scale_colour_manual(values = c(equal = "#0072B2", entropy = "#D55E00", MEREC = "#009E73"), name = "Weights") +
+  scale_shape_manual(values = c(equal = 16, entropy = 17, MEREC = 15), name = "Weights") +
+  labs(x = "Spearman correlation", y = NULL) +
+  theme_figure + theme(legend.position = "bottom", strip.background = element_blank(),
+                       strip.text = element_text(face = "bold", size = 9, hjust = 0),
+                       panel.grid.major.y = element_line(colour = "grey92", linewidth = 0.3))
+save_paper_fig(fig2, "fig2_benchmark", 6.5, 4.4)
+
+fig3 <- ggplot(athlete_report, aes(current_rank, age_rank, colour = age_latest)) +
+  annotate("rect", xmin = -Inf, xmax = k_top + 0.5, ymin = -Inf, ymax = k_top + 0.5, fill = "grey90") +
+  geom_abline(linetype = "dashed", colour = "grey50") +
+  geom_hline(yintercept = k_top + 0.5, linetype = "dotted", colour = "grey40") +
+  geom_vline(xintercept = k_top + 0.5, linetype = "dotted", colour = "grey40") +
+  geom_point(size = 1.4) +
+  scale_colour_viridis_c(name = "Age (years)", option = "viridis") +
+  scale_x_continuous(breaks = c(1, k_top, 100, 150, n_main)) + scale_y_continuous(breaks = c(1, k_top, 100, 150, n_main)) +
+  labs(x = "Current rank (no age adjustment; 1 = best)", y = "Age-adjusted rank (1 = best)") +
+  theme_figure + theme(legend.position = "right")
+save_paper_fig(fig3, "fig3_current_vs_age", 6.5, 4.6)
+
+fig4 <- ggplot(athlete_report, aes(age_rank, age_p_topk, colour = factor(age_decision, levels = names(decision_labels)))) +
+  geom_vline(xintercept = k_top + 0.5, linetype = "dashed", colour = "grey30", linewidth = 0.4) +
+  geom_hline(yintercept = c(settings$p_reject, settings$p_select), linetype = "dotted", colour = "grey50") +
+  geom_point(size = 1.3) +
+  scale_colour_manual(values = decision_colours, labels = decision_labels, name = "Decision") +
+  scale_x_continuous(breaks = c(1, k_top, 100, 150, n_main)) +
+  labs(x = "Age-adjusted rank (1 = best)", y = sprintf("P(truly in top %d)", k_top)) +
+  theme_figure + theme(legend.position = "inside", legend.position.inside = c(0.97, 0.97),
+                       legend.justification = c(1, 1),
+                       legend.background = element_rect(fill = "white", colour = "grey80", linewidth = 0.3))
+save_paper_fig(fig4, "fig4_selection_probability", 6.5, 3.6)
+
+# 9g. Sensitivity: does the ranking method change who is in the top k? (point estimates, age-relative)
+all_scores <- score_all(X$age)
+win_top    <- rank_best1(all_scores[[winner]]) <= k_top
+method_sensitivity <- tibble(ranker = names(all_scores)) |>
+  mutate(label = ranker_label(ranker),
+         spearman_with_winner = map_dbl(ranker, \(r) cor(all_scores[[r]], all_scores[[winner]], method = "spearman")),
+         topk_overlap = map_int(ranker, \(r) sum(rank_best1(all_scores[[r]]) <= k_top & win_top))) |>
+  arrange(desc(topk_overlap), desc(spearman_with_winner))
+write_csv(method_sensitivity, file.path(out$paper, "method_sensitivity.csv"))
+num <- c(num,
+  method_overlap_min = fint(min(method_sensitivity$topk_overlap)),
+  method_overlap_min_label = method_sensitivity$label[which.min(method_sensitivity$topk_overlap)],
+  method_overlap_median = fint(median(method_sensitivity$topk_overlap[method_sensitivity$ranker != winner])),
+  method_rho_min = fmt(min(method_sensitivity$spearman_with_winner)),
+  n_border_any = fint(sum(athlete_report$age_decision == "retest (grey zone)")),
+  cur_select_20 = fint(filter(selection, version == "current", k == k_top)$select),
+  cur_border_20 = fint(filter(selection, version == "current", k == k_top)$retest_grey_zone),
+  cur_wrong_20 = fmt(filter(selection, version == "current", k == k_top)$expected_wrong_selections_lower_bound, 1),
+  hidden_median_age = fmt(median(athlete_report$age_latest[athlete_report$hidden_talent]), 1),
+  hidden_under18 = fint(sum(athlete_report$age_latest[athlete_report$hidden_talent] < 18)),
+  dropped_n = fint(sum(athlete_report$current_rank <= k_top & athlete_report$age_rank > k_top)),
+  dropped_median_age = fmt(median(athlete_report$age_latest[athlete_report$current_rank <= k_top & athlete_report$age_rank > k_top]), 1),
+  border_rank_min = fint(min(athlete_report$age_rank[athlete_report$age_decision == "retest (grey zone)"])),
+  border_rank_max = fint(max(athlete_report$age_rank[athlete_report$age_decision == "retest (grey zone)"])),
+  select_rank_max = fint(max(athlete_report$age_rank[athlete_report$age_decision == "select"])),
+  top1_set = with(arrange(athlete_report, age_rank)[1, ], sprintf("%.0f\u2013%.0f", age_rank_lower, age_rank_upper)),
+  cohort_share_border = fmt(100 * main_sel$retest_grey_zone / n_main, 0))
+write_csv(enframe(num, name = "key", value = "value"), file.path(out$paper, "numbers.csv"))
+
+# 9h. Case study leaderboard: the players around the 20% cut-off with their uncertainty
+leaderboard <- athlete_report |>
+  filter(between(age_rank, min(age_rank[age_decision == "retest (grey zone)"]) - 4,
+                 max(age_rank[age_decision == "retest (grey zone)"]) + 2)) |>
+  transmute(Player = athlete, Age = fmt(age_latest, 1), Visits = visits, `Current rank` = fmt(current_rank, 0),
+            `Age-adjusted rank` = fmt(age_rank, 0), `95% rank set` = sprintf("%.0f\u2013%.0f", age_rank_lower, age_rank_upper),
+            `P(top 37)` = fmt(age_p_topk), Decision = decision_labels[age_decision])
+write_csv(leaderboard, file.path(out$paper, "table_leaderboard.csv"))
+
+# 9i. Pipeline diagram (Figure 1 of the paper)
+steps <- tibble(
+  x = 1:5,
+  title = c("1. Raw tests", "2. Clean and\nselect KPIs", "3. Age-relative\nscores", "4. Current ability\nand composite", "5. Uncertainty\nand decision"),
+  body = c(sprintf("%s players\n%s attempts\nCMJ, DJ, SLJ", num[["n_athletes_all"]], num[["n_attempts_all"]]),
+           sprintf("%s metrics \u2192 %s KPIs\nICC \u2265 0.75\n|r| < 0.70", num[["n_candidates"]], num[["n_kpis"]]),
+           "LMS model\n(GAMLSS)\nvs same-age peers",
+           "Mixed model\nper KPI; 15\nrankers compared",
+           sprintf("%s bootstraps\nP(top k)\nselect / retest / release", num[["n_boot"]])))
+fig_pipe <- ggplot(steps) +
+  geom_tile(aes(x, 0.5), width = 0.84, height = 1.5, fill = "#EAF2FA", colour = "#0072B2", linewidth = 0.4) +
+  geom_text(aes(x, 0.98, label = title), fontface = "bold", size = 3.1, lineheight = 0.9) +
+  geom_text(aes(x, 0.2, label = body), size = 2.8, lineheight = 0.95, colour = "grey20") +
+  geom_segment(data = tibble(x = 1:4 + 0.42, xend = 2:5 - 0.42), aes(x = x, xend = xend, y = 0.5, yend = 0.5),
+               arrow = arrow(length = unit(4, "pt"), type = "closed"), colour = "grey30", linewidth = 0.4) +
+  coord_cartesian(xlim = c(0.56, 5.44), ylim = c(-0.27, 1.27), expand = FALSE) +
+  theme_void()
+save_paper_fig(fig_pipe, "fig0_pipeline", 6.5, 1.8)
+
+# Package versions used (install_packages.R reads this file)
+pkgs <- c("gamlss", "gamlss.dist", "tidyverse", "here", "data.table", "lme4", "Matrix", "csranks", "writexl",
+          "gt", "ragg", "MASS", "webshot2")
+write_csv(tibble(package = pkgs, version = map_chr(pkgs, \(p) as.character(packageVersion(p)))), here("packages.csv"))
 
 writeLines(capture.output(sessionInfo()), here("results", "session_info.txt"))
 message("Done.")

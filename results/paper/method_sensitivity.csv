@@ -1,0 +1,16 @@
+ranker,label,spearman_with_winner,topk_overlap
+wavg_equal,"Weighted average, equal weights",1,37
+spotis_equal,"SPOTIS, equal weights",1,37
+wavg_merec,"Weighted average, MEREC weights",0.9998022291322363,37
+spotis_merec,"SPOTIS, MEREC weights",0.9998022291322363,37
+marcos_equal,"MARCOS, equal weights",0.9973310723488913,36
+topsis_merec,"TOPSIS, MEREC weights",0.9959192624908948,36
+topsis_equal,"TOPSIS, equal weights",0.9941393246810211,36
+wavg_entropy,"Weighted average, entropy weights",0.9898392769027125,36
+spotis_entropy,"SPOTIS, entropy weights",0.9898392769027125,36
+marcos_entropy,"MARCOS, entropy weights",0.9873642038645601,36
+marcos_merec,"MARCOS, MEREC weights",0.9963402598826689,35
+promethee_equal,"PROMETHEE II, equal weights",0.9892904435631894,35
+promethee_entropy,"PROMETHEE II, entropy weights",0.9887701393403461,35
+promethee_merec,"PROMETHEE II, MEREC weights",0.9879947208885199,34
+topsis_entropy,"TOPSIS, entropy weights",0.9481899070281109,33

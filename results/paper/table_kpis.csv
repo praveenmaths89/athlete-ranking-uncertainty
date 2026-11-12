@@ -1,0 +1,12 @@
+Test,KPI,Better,ICC,Between-athlete share,Entropy weight,MEREC weight
+CMJ,Jump Height (Flight Time),higher,0.98,0.62,0.102,0.090
+Drop Jump,Jump Height (Imp-Mom),higher,0.98,0.51,0.102,0.085
+Single-Leg Jump,Peak Power / BM,higher,0.96,0.54,0.079,0.091
+Single-Leg Jump,Concentric RPD / BM,higher,0.96,0.35,0.056,0.096
+CMJ,Concentric Mean Power / BM,higher,0.96,0.61,0.094,0.091
+Drop Jump,RSI (JH (Flight Time)/Contact Time),higher,0.95,0.66,0.101,0.092
+Single-Leg Jump,Concentric Impulse (Abs) / BM,higher,0.89,0.48,0.131,0.088
+Drop Jump,Concentric Impulse (Abs) / BM,higher,0.88,0.52,0.085,0.091
+CMJ,Concentric Duration,lower,0.87,0.45,0.077,0.093
+CMJ,Flight Time:Contraction Time,higher,0.85,0.36,0.047,0.095
+CMJ,Eccentric Peak Force / BM,higher,0.77,0.34,0.126,0.087

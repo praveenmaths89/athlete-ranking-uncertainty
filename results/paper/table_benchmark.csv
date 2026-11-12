@@ -1,0 +1,16 @@
+Method,Simulation Spearman,Simulation NDCG@10,Held-out Spearman,Mean rank (A),Mean rank (B),Overall mean rank
+"Weighted average, equal weights",0.825,0.624,0.706,4.2,4.8,4.46
+"Weighted average, entropy weights",0.818,0.618,0.744,7.0,2.0,4.50
+"SPOTIS, entropy weights",0.818,0.618,0.744,7.0,2.0,4.50
+"SPOTIS, equal weights",0.825,0.624,0.706,4.2,5.2,4.71
+"MARCOS, equal weights",0.819,0.615,0.700,6.8,8.0,7.42
+"PROMETHEE II, entropy weights",0.809,0.585,0.733,11.5,3.5,7.50
+"MARCOS, entropy weights",0.809,0.602,0.729,11.7,3.5,7.58
+"Weighted average, MEREC weights",0.825,0.624,0.696,3.9,11.8,7.83
+"SPOTIS, MEREC weights",0.825,0.624,0.697,4.4,11.2,7.83
+"MARCOS, MEREC weights",0.819,0.616,0.694,6.5,10.0,8.25
+"TOPSIS, MEREC weights",0.817,0.613,0.698,7.8,9.5,8.67
+"TOPSIS, equal weights",0.815,0.610,0.702,10.0,10.5,10.25
+"PROMETHEE II, equal weights",0.815,0.587,0.691,9.7,12.0,10.83
+"PROMETHEE II, MEREC weights",0.815,0.587,0.683,10.3,14.0,12.17
+"TOPSIS, entropy weights",0.776,0.549,0.655,15.0,12.0,13.50

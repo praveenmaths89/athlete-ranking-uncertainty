@@ -1,0 +1,7 @@
+Ranking,Cut-off,Places,Select,Borderline,Do not select,Clearly top (95% set),Median 95% range width,Expected wrong selections (≥)
+Age-adjusted,Top 10%,19,15,9,159,9,65,1.4
+Age-adjusted,Top 20%,37,29,16,138,16,65,2.2
+Age-adjusted,Top 30%,55,45,22,116,24,65,3.4
+Current (not age-adjusted),Top 10%,19,12,15,156,7,45,2.1
+Current (not age-adjusted),Top 20%,37,30,14,139,16,45,2.2
+Current (not age-adjusted),Top 30%,55,48,16,119,33,45,2.6
