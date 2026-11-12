@@ -33,11 +33,17 @@ soffice --headless --convert-to pdf --outdir paper paper/SSAC27_268_Beyond_the_R
 
 `paper/manuscript.txt` is the text; every number in it is a `{{key}}` filled from
 `results/paper/numbers.csv`, and every table and figure is read from `results/paper/`.
-The official SSAC 2027 Word template (sent by the conference to invited authors) is not redistributed here:
-save it as `paper/SSAC27_paper_template.docx` or pass its path as the first argument to `build_docx.py`.
+The official SSAC 2027 Word template (sent by the conference to invited authors) is not redistributed here
+(`paper/SSAC27_paper_template.docx` is gitignored): save your copy under that name or pass its path as the first
+argument, e.g. `python3 paper/build_docx.py /path/to/SSAC27_paper_template.docx`. Do not commit the template.
 The generated `.docx` and `.pdf` are committed, so the paper can be read without rebuilding it.
 `paper/references.json` holds Crossref metadata for the references (DOIs in `paper/dois.txt`).
 `results/reproducibility_runs.csv` records the reruns on different platforms and package versions.
+
+**Official submission:** the Word file `paper/SSAC27_268_Beyond_the_Rank_Order.docx` (PDF alongside). A LaTeX copy of the
+same paper (same text, numbers, figures and references) is kept in a separate private repository,
+`praveenmaths89/ssac27-268-beyond-the-rank-order-latex`; it is not the submission. The paper has three figures
+(the earlier pipeline figure was removed) and the mapping below is the current one. See `STATUS.md` for open items.
 
 | Paper | File in `results/paper/` |
 |---|---|
@@ -80,7 +86,7 @@ size-independent metrics are included. Columns are described in `results/public/
 | `results/headline.csv` | Key numbers |
 | `results/figures/Figure_1_rank_ranges.png` | Abstract Figure 1 (paper Figure 3): every player's age-adjusted rank with its 95% range, coloured by decision |
 | `results/figures/Table_1_summary.png` | Abstract and paper Table 1: selection decisions at 10%, 20% and 30% cut-offs (also `.html`, `.csv`) |
-| `results/figures/Figure_S1–S5` | Selection probability, current vs age rank, benchmark, longitudinal vs single visit, retention check |
+| `results/figures/Figure_S1–S5` | Supplementary figures (not in the paper's numbering): selection probability, current vs age rank (cf. paper Figure 2), benchmark (cf. paper Figure 1), longitudinal vs single visit, retention check |
 | `results/tables/6_uncertainty/athlete_rankings.csv` | Per player: ranks, 95% ranges, P(top k), decision |
 | `results/athlete_ranking_results.xlsx` | All key tables, one sheet each |
 
