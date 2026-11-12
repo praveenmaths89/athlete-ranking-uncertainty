@@ -266,9 +266,10 @@ def table(file, cap, widths, row_filter=None):
             c.width = Inches(widths[j])
             p = c.paragraphs[0]
             p.paragraph_format.space_after = Pt(0)
-            p.paragraph_format.keep_with_next = i < min(3, len(rows) - 1)   # caption + first rows stay together
+            # short tables (<= 15 rows) are never split across pages; long ones keep caption + first rows together
+            p.paragraph_format.keep_with_next = i < (len(rows) - 1 if len(rows) <= 15 else min(3, len(rows) - 1))
             p.alignment = 0 if j == 0 or (j == 1 and "KPI" in rows[0][1]) else 1
-            add_inline(p._p, val.replace("\u2265", "\u2265"), size=9, bold=(i == 0))
+            add_inline(p._p, val, size=9, bold=(i == 0))
             edges = {}
             if i == 0: edges.update(top=8, bottom=4)
             if i == len(rows) - 1: edges.update(bottom=8)
@@ -319,7 +320,8 @@ def references():
         append(p)
 
 # ---- walk the manuscript ---------------------------------------------------------------------------
-text = (ROOT / "paper" / "manuscript.txt").read_text(encoding="utf-8")
+import os
+text = Path(os.environ.get("MANUSCRIPT", ROOT / "paper" / "manuscript.txt")).read_text(encoding="utf-8")
 blocks = [b.strip() for b in re.split(r"\n\s*\n", text) if b.strip()]
 in_appendix = False
 for b in blocks:
