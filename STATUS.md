@@ -40,3 +40,6 @@ Section 1 of `ranking.R` needs the private VALD export and is skipped without it
 
 ## Related repository
 - LaTeX copy (private): https://github.com/praveenmaths89/ssac27-268-beyond-the-rank-order-latex
+
+## Cited papers
+- `papers/` holds legally available copies (open access, preprints, accepted manuscripts, official manuals) of the works cited in the paper. `papers/README.md` lists every cited work with its DOI, what version is stored, and why any item is link-only (paywalled or a book).
