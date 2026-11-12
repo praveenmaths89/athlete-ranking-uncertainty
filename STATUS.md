@@ -3,7 +3,7 @@
 **Paper:** *Beyond the Rank Order: Quantifying Uncertainty in Physical-Test Rankings for Football Player Selection*
 **Venue:** MIT Sloan Sports Analytics Conference 2027, Soccer track, Paper ID 268
 **Repository:** https://github.com/praveenmaths89/athlete-ranking-uncertainty — **public** (keep public)
-**Snapshot commit:** `__COMMIT__` (code, data, results and manuscript as of 12 Nov 2026; later commits only touch this note)
+**Snapshot commit:** `bbe1ac4` (code, data, results and manuscript as of 12 Nov 2026; later commits only touch this note)
 
 ## What is in the repository
 - `ranking.R` — the whole analysis in one procedural script (sections 1–9, seed 2026).
