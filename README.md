@@ -12,7 +12,7 @@ and a select / borderline / do-not-select decision).
 1. Open `R_pipeline.Rproj` in RStudio (or run from the repository root).
 2. Install packages once: `Rscript install_packages.R` (installs the versions listed in
    `packages.csv`; the full environment of the paper run is in `results/session_info.txt`).
-3. Run the single script `Rscript ranking.R` (about 11–40 minutes depending on the machine; seed 2026).
+3. Run the single analysis script `Rscript ranking.R` from the repository root (about 11–40 minutes depending on the machine; seed 2026).
    For a 2-minute test run set `RANKING_MODE=quick` in `.Renviron`.
 
 Section 1 (data extraction) runs only if the private VALD ForceDecks export is available
@@ -23,18 +23,31 @@ result can be reproduced from this repository.
 
 ### Paper
 
-The manuscript (SSAC 2027, Paper ID 268) is generated from the pipeline outputs:
+The manuscript (SSAC 2027, Soccer track, Paper ID 268) is generated from the script's outputs:
 
 ```
-Rscript ranking.R                                         # writes results/paper/ (numbers, tables, figures)
-python3 paper/build_docx.py /path/to/SSAC27_paper_template.docx   # needs python-docx, lxml, pandoc
+Rscript ranking.R                     # writes results/paper/ (numbers, tables, figures)
+python3 paper/build_docx.py           # fills paper/SSAC27_paper_template.docx; needs python-docx, lxml, pandoc
 soffice --headless --convert-to pdf --outdir paper paper/SSAC27_268_Beyond_the_Rank_Order.docx
 ```
 
 `paper/manuscript.txt` is the text; every number in it is a `{{key}}` filled from
-`results/paper/numbers.csv`. The official conference Word template is not included in this
-repository. `paper/references.json` holds Crossref metadata for the references (`paper/dois.txt`).
+`results/paper/numbers.csv`, and every table and figure is read from `results/paper/`.
+The official SSAC 2027 Word template (sent by the conference to invited authors) is not redistributed here:
+save it as `paper/SSAC27_paper_template.docx` or pass its path as the first argument to `build_docx.py`.
+The generated `.docx` and `.pdf` are committed, so the paper can be read without rebuilding it.
+`paper/references.json` holds Crossref metadata for the references (DOIs in `paper/dois.txt`).
 `results/reproducibility_runs.csv` records the reruns on different platforms and package versions.
+
+| Paper | File in `results/paper/` |
+|---|---|
+| Figure 1: agreement of the 15 ranking methods (simulation and held-out visit) | `fig1_benchmark.png` |
+| Figure 2: current versus age-adjusted rank | `fig2_current_vs_age.png` |
+| Figure 3: age-adjusted rank of every player with its 95% rank set and decision | `fig3_rank_ranges.png` |
+| Table 1: selection decisions at 10%, 20% and 30% cut-offs | `table_selection_age.csv` |
+| Table 2: case-study leaderboard around the 20% cut-off | `table_leaderboard.csv` |
+| Table A1: the 11 KPIs | `table_kpis.csv` |
+| Numbers in the text | `numbers.csv` |
 
 ## Data
 
@@ -65,8 +78,8 @@ size-independent metrics are included. Columns are described in `results/public/
 | File | Content |
 |---|---|
 | `results/headline.csv` | Key numbers |
-| `results/figures/Figure_1_rank_ranges.png` | Figure 1: every player's age-adjusted rank with its 95% range, coloured by decision |
-| `results/figures/Table_1_summary.png` | Table 1: selection decisions at 10%, 20% and 30% cut-offs (also `.html`, `.csv`) |
+| `results/figures/Figure_1_rank_ranges.png` | Abstract Figure 1 (paper Figure 3): every player's age-adjusted rank with its 95% range, coloured by decision |
+| `results/figures/Table_1_summary.png` | Abstract and paper Table 1: selection decisions at 10%, 20% and 30% cut-offs (also `.html`, `.csv`) |
 | `results/figures/Figure_S1–S5` | Selection probability, current vs age rank, benchmark, longitudinal vs single visit, retention check |
 | `results/tables/6_uncertainty/athlete_rankings.csv` | Per player: ranks, 95% ranges, P(top k), decision |
 | `results/athlete_ranking_results.xlsx` | All key tables, one sheet each |
@@ -75,10 +88,10 @@ size-independent metrics are included. Columns are described in `results/public/
 
 | File | Purpose |
 |---|---|
-| `ranking.R` | The analysis, in numbered sections |
-| `R/functions.R` | Quality control, LMS age models, mixed model, 15 ranking methods, simulation |
+| `ranking.R` | The whole analysis in one script: setup, functions (quality control, LMS age models, mixed model, 15 ranking methods, simulation), then numbered sections 1–9 from raw data to paper assets |
+| `results/public/` | De-identified data (`trials.csv`) and its data dictionary |
 | `install_packages.R`, `packages.csv` | Package installation and versions |
-| `paper/` | Manuscript source, Word builder, references, generated `.docx` and `.pdf` |
+| `paper/` | Manuscript source (`manuscript.txt`), Word builder (`build_docx.py`), references, generated `.docx` and `.pdf` |
 | `config/kpi_rules.csv` | Variable dictionary: excluded metrics and better direction; edit to reuse the framework with another test battery |
 
 ## License

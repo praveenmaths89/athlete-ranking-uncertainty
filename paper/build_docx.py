@@ -4,7 +4,8 @@
 Inputs : paper/manuscript.txt (text with light markup), results/paper/ (numbers, tables and
          figures written by section 9 of ranking.R), paper/references.json (Crossref metadata).
 Output : paper/SSAC27_268_Beyond_the_Rank_Order.docx (then convert to PDF with LibreOffice).
-Usage  : python3 paper/build_docx.py /path/to/SSAC27_paper_template.docx
+Usage  : python3 paper/build_docx.py [template.docx]   (default: paper/SSAC27_paper_template.docx,
+         the official SSAC 2027 template, not redistributed in the repository)
 
 Markup : # / ## headings, blank-line paragraphs, *italic*, **bold**, ^sup^, ~sub~,
          [@key; @key] citations, {{number_key}}, \\eqref{label}, [[placeholder]] (highlighted),
@@ -19,7 +20,7 @@ from docx.oxml import OxmlElement
 from lxml import etree
 
 ROOT = Path(__file__).resolve().parent.parent
-TEMPLATE = Path(sys.argv[1] if len(sys.argv) > 1 else "/workspace/schools/ssac27-invitation/SSAC27_paper_template.docx")
+TEMPLATE = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "paper" / "SSAC27_paper_template.docx"
 OUT = ROOT / "paper" / "SSAC27_268_Beyond_the_Rank_Order.docx"
 ASSETS = ROOT / "results" / "paper"
 PANDOC = "pandoc"

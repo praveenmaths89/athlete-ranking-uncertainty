@@ -4,10 +4,12 @@
 # Paper: "Beyond the Rank Order: Quantifying Uncertainty in Physical-Test
 #         Rankings for Football Player Selection" (MIT SSAC 2027, Soccer track)
 #
-# Run top to bottom in RStudio (open R_pipeline.Rproj first).
+# One script, run top to bottom from the repository root: Rscript ranking.R
+# (or open R_pipeline.Rproj in RStudio and source it). Seed 2026.
 # For a fast test run set RANKING_MODE=quick (e.g. in .Renviron).
 #
 #   0. Setup ............ packages, settings, output folders, plot style
+#      Functions ........ quality control, LMS, mixed model, 15 rankers, simulation
 #   1. Data ............. private VALD export -> de-identified trial file (skipped if absent)
 #   2. Clean ............ remove impossible / inconsistent attempts and values
 #   3. Select KPIs ...... relevant, available, reliable, not redundant
@@ -16,9 +18,9 @@
 #   6. Benchmark ........ 15 rankers: simulation (A) and held-out visit (B)
 #   7. Uncertainty ...... bootstrap: rank ranges, P(top k), decisions, retention check
 #   8. Outputs .......... headline, Figure 1, Table 1, supplementary figures, Excel
-#   9. Paper assets ..... numbers, tables and figures read by paper/build_paper.R
+#   9. Paper assets ..... numbers, tables and figures read by paper/build_docx.py
 #
-# Sections 2-8 only read results/public/trials.csv, so anyone can reproduce
+# Sections 2-9 only read results/public/trials.csv, so anyone can reproduce
 # them from the public repository without the private VALD data.
 # =============================================================================
 
@@ -33,8 +35,6 @@ library(lme4)        # longitudinal mixed models
 library(csranks)     # confidence sets for ranks (Mogstad et al. 2024)
 library(writexl)     # Excel output
 library(gt)          # Table 1 as a formatted table (PNG + HTML)
-
-source(here("R", "functions.R"))
 
 quick <- Sys.getenv("RANKING_MODE") == "quick"
 
@@ -108,6 +108,239 @@ decision_labels  <- c("select" = "Select", "retest (grey zone)" = "Borderline (r
                       "don't select" = "Do not select")
 
 set.seed(settings$seed)
+
+
+# ---- Functions -------------------------------------------------------------------
+# Plain functions used by sections 2-9. Convention: X is a matrix (athletes x KPIs) of
+# z-scores in which higher is always better (lower-is-better KPIs are sign-flipped first).
+# Every ranking method returns a score where higher = better.
+
+# Small helpers
+
+rescale01   <- function(x) (x - min(x)) / (max(x) - min(x))
+to_positive <- function(X) apply(X, 2, \(x) 0.01 + 0.99 * rescale01(x))   # values in [0.01, 1]
+rank_best1  <- function(score) rank(-score, ties.method = "average")      # 1 = best
+first_match <- function(x, patterns) patterns[which(str_detect(x, patterns))[1]]
+
+
+# Section 2: trial quality control
+
+# Rules 2 and 3: a value is inconsistent with the athlete's own attempts (same
+# test, leg and day) if it is below half or above double their median; with only
+# two attempts that differ by more than 2x, both are inconsistent.
+inconsistent_attempt <- function(x) {
+  n <- length(x)
+  if (n == 1) return(FALSE)
+  if (n == 2) return(rep(max(x) / min(x) > 2, 2))
+  x < 0.5 * median(x) | x > 2 * median(x)
+}
+
+
+# Section 3: redundancy filter
+
+# Walk through KPIs from most to least reliable; keep a KPI only if |r| with
+# every KPI already kept is below the threshold (Dormann et al. 2013)
+greedy_select <- function(R, ordered_kpis, threshold) {
+  Reduce(\(kept, k) if (all(abs(R[k, kept]) < threshold)) c(kept, k) else kept,
+         ordered_kpis[-1], ordered_kpis[1])
+}
+
+
+# Sections 3-4: age-relative scores (LMS method, Cole & Green 1992)
+
+# Median (M), spread (S) and skewness (L) of a KPI as smooth functions of age
+fit_lms <- function(y, age) {
+  lms_data <- data.frame(y = y, age = age)
+  fit <- gamlss(y ~ pb(age), sigma.formula = ~ pb(age), nu.formula = ~ 1,
+                family = BCCGo, data = lms_data, trace = FALSE,
+                control = gamlss.control(n.cyc = 200))
+  list(fit = fit, data = lms_data)
+}
+
+# z-score of a value relative to athletes of the same age (not capped)
+lms_z <- function(lms, y, age) {
+  p <- predictAll(lms$fit, newdata = data.frame(age = age), data = lms$data)
+  qnorm(pBCCGo(y, p$mu, p$sigma, p$nu))
+}
+
+
+# Section 5: longitudinal model
+
+# One KPI: z ~ time + (1 + time | athlete) + (1 | visit); time = years before the
+# athlete's latest visit, so the athlete intercept is the level at the latest visit.
+# The random slope is dropped when it cannot be estimated (singular fit).
+fit_one_kpi <- function(d) {
+  quiet_lmer <- \(f) suppressMessages(suppressWarnings(
+    lmer(f, data = d, control = lmerControl(calc.derivs = FALSE))))
+  fit <- quiet_lmer(z ~ time + (1 + time | athlete) + (1 | visit))
+  slope_kept <- !isSingular(fit)
+  if (!slope_kept) fit <- quiet_lmer(z ~ time + (1 | athlete) + (1 | visit))
+  athlete_coef <- coef(fit)$athlete
+  vc <- as.data.frame(VarCorr(fit))
+  sd_of <- \(grp, var) sum(vc$sdcor[vc$grp == grp & vc$var1 %in% var & is.na(vc$var2)])
+  list(level      = setNames(athlete_coef[, "(Intercept)"], rownames(athlete_coef)),
+       slope_kept = slope_kept,
+       varcomp    = tibble(sd_athlete = sd_of("athlete", "(Intercept)"),
+                           sd_slope   = sd_of("athlete", "time"),
+                           sd_visit   = sd_of("visit", "(Intercept)"),
+                           sd_trial   = sd_of("Residual", NA)))
+}
+
+# All KPIs: athlete x KPI matrix of levels plus variance components.
+# long: one row per trial with athlete, visit, time, kpi, z
+fit_levels <- function(long, kpis) {
+  fits <- map(kpis, \(k) fit_one_kpi(filter(long, kpi == k))) |> set_names(kpis)
+  athletes <- sort(unique(long$athlete))
+  list(level   = sapply(fits, \(f) f$level[athletes]) |> `rownames<-`(athletes),
+       varcomp = map_dfr(fits, \(f) mutate(f$varcomp, slope_kept = f$slope_kept), .id = "kpi"))
+}
+
+
+# Section 6: weights and ranking methods
+
+weights_equal <- function(X) rep(1 / ncol(X), ncol(X))
+
+# Entropy weights: information from dispersion
+weights_entropy <- function(X) {
+  P <- sweep(to_positive(X), 2, colSums(to_positive(X)), "/")
+  e <- -colSums(P * log(P)) / log(nrow(X))
+  (1 - e) / sum(1 - e)
+}
+
+# MEREC weights (Keshavarz-Ghorabaee et al. 2021): a KPI's weight is how much the
+# athletes' overall performance measure changes when that KPI is removed
+weights_merec <- function(X) {
+  P <- to_positive(X)
+  L <- abs(log(sweep(1 / P, 2, apply(P, 2, min), "*")))        # |ln(min / x)|
+  m <- ncol(X)
+  S <- log(1 + rowSums(L) / m)
+  E <- sapply(seq_len(m), \(j) sum(abs(log(1 + rowSums(L[, -j, drop = FALSE]) / m) - S)))
+  E / sum(E)
+}
+
+# Weighted average of z-scores
+rank_wavg <- function(X, w) as.vector(X %*% w)
+
+# TOPSIS (Hwang & Yoon 1981): closeness to the ideal athlete
+rank_topsis <- function(X, w) {
+  P       <- to_positive(X)
+  V       <- sweep(sweep(P, 2, sqrt(colSums(P^2)), "/"), 2, w, "*")
+  d_best  <- sqrt(rowSums(sweep(V, 2, apply(V, 2, max))^2))
+  d_worst <- sqrt(rowSums(sweep(V, 2, apply(V, 2, min))^2))
+  d_worst / (d_best + d_worst)
+}
+
+# SPOTIS (Dezert et al. 2020): distance to a fixed ideal (+3 z) within fixed
+# bounds (+/- 3 z), so adding or removing athletes never reorders the others
+rank_spotis <- function(X, w, bound = 3) {
+  distance <- abs(pmin(pmax(X, -bound), bound) - bound) / (2 * bound)
+  -as.vector(distance %*% w)
+}
+
+# MARCOS (Stević et al. 2020): utility relative to the ideal and anti-ideal athlete
+rank_marcos <- function(X, w) {
+  P       <- to_positive(X)
+  ideal   <- apply(P, 2, max)
+  anti    <- apply(P, 2, min)
+  S       <- as.vector(sweep(P, 2, ideal, "/") %*% w)
+  k_minus <- S / sum(anti / ideal * w)
+  k_plus  <- S / sum(w)
+  f_minus <- k_plus  / (k_plus + k_minus)
+  f_plus  <- k_minus / (k_plus + k_minus)
+  (k_plus + k_minus) / (1 + (1 - f_plus) / f_plus + (1 - f_minus) / f_minus)
+}
+
+# PROMETHEE II (Brans & Vincke 1985), usual preference function: net flow
+rank_promethee <- function(X, w) {
+  P <- Reduce(`+`, lapply(seq_len(ncol(X)), \(j) w[j] * outer(X[, j], X[, j], ">")))
+  (rowSums(P) - colSums(P)) / (nrow(X) - 1)
+}
+
+methods <- list(wavg = rank_wavg, topsis = rank_topsis, spotis = rank_spotis,
+                marcos = rank_marcos, promethee = rank_promethee)
+weights <- list(equal = weights_equal, entropy = weights_entropy, merec = weights_merec)
+rankers <- expand_grid(method = names(methods), weight = names(weights)) |>
+  mutate(ranker = paste(method, weight, sep = "_"))
+
+# Readable name for tables and figures, e.g. "spotis_equal" -> "SPOTIS, equal weights"
+ranker_label <- function(ranker) {
+  method <- c(wavg = "Weighted average", topsis = "TOPSIS", spotis = "SPOTIS",
+              marcos = "MARCOS", promethee = "PROMETHEE II")
+  weight <- c(equal = "equal", entropy = "entropy", merec = "MEREC")
+  parts  <- str_split_fixed(ranker, "_", 2)
+  paste0(method[parts[, 1]], ", ", weight[parts[, 2]], " weights")
+}
+
+# One ranker by name, e.g. "topsis_entropy"
+score_one <- function(X, ranker) {
+  r <- rankers[rankers$ranker == ranker, ]
+  methods[[r$method]](X, weights[[r$weight]](X))
+}
+
+# Scores of all 15 rankers: one column per ranker
+score_all <- function(X) {
+  W <- map(weights, \(f) f(X))
+  map2(rankers$method, rankers$weight, \(m, w) methods[[m]](X, W[[w]])) |>
+    set_names(rankers$ranker) |>
+    as_tibble()
+}
+
+
+# Section 6: benchmark
+
+# Agreement of an estimated ranking with the true one
+rank_metrics <- function(true_score, est_score, k = 10) {
+  relevance <- pmax(0, k + 1 - rank_best1(true_score))            # true #1 = k, ..., #k = 1
+  dcg  <- sum(relevance[order(-est_score)[1:k]] / log2(2:(k + 1)))
+  idcg <- sum(sort(relevance, decreasing = TRUE)[1:k] / log2(2:(k + 1)))
+  c(spearman = cor(true_score, est_score, method = "spearman"), ndcg_at_10 = dcg / idcg)
+}
+
+# Test A: one simulated cohort with the real visit pattern and known true levels
+# (ADEMP; Morris et al. 2019). design: athlete, session, time, n_trials.
+# par: variance components per KPI. R: correlation of athlete levels.
+simulate_once <- function(design, par, R) {
+  athletes <- sort(unique(design$athlete))
+  n <- length(athletes); p <- nrow(par)
+  true_level <- MASS::mvrnorm(n, rep(0, p), R) %*% diag(par$sd_athlete, p)
+  true_slope <- matrix(rnorm(n * p), n) %*% diag(par$sd_slope, p)
+  visits <- mutate(design, v = row_number())
+  visit_effect <- matrix(rnorm(nrow(visits) * p), ncol = p) %*% diag(par$sd_visit, p)
+  trials <- visits |> uncount(n_trials) |> mutate(a = match(athlete, athletes))
+  noise  <- matrix(rnorm(nrow(trials) * p), ncol = p) %*% diag(par$sd_trial, p)
+  Z <- true_level[trials$a, ] + true_slope[trials$a, ] * trials$time + visit_effect[trials$v, ] + noise
+  colnames(Z) <- par$kpi
+  long <- bind_cols(select(trials, athlete, session, time), as_tibble(Z)) |>
+    mutate(visit = paste(athlete, session)) |>
+    pivot_longer(all_of(par$kpi), names_to = "kpi", values_to = "z")
+
+  X_long   <- fit_levels(long, par$kpi)$level[athletes, ]
+  X_latest <- long |>
+    filter(session == max(session), .by = athlete) |>
+    summarise(z = mean(z), .by = c(athlete, kpi)) |>
+    pivot_wider(names_from = kpi, values_from = z) |>
+    arrange(athlete) |> select(all_of(par$kpi)) |> as.matrix()
+
+  truths <- list(additive       = rowMeans(true_level),
+                 weakest_link   = apply(true_level, 1, min),
+                 random_weights = as.vector(true_level %*% prop.table(rexp(p))))
+  inputs <- list(longitudinal = score_all(X_long), latest_visit_only = score_all(X_latest))
+  expand_grid(input = names(inputs), truth = names(truths), ranker = rankers$ranker) |>
+    mutate(metrics = pmap(list(input, truth, ranker),
+                          \(i, t, r) as_tibble_row(rank_metrics(truths[[t]], inputs[[i]][[r]])))) |>
+    unnest(metrics)
+}
+
+
+# Section 7: retention check
+
+# AUC: probability that a randomly chosen member of the group scores higher than a
+# randomly chosen non-member (ties count half)
+auc <- function(score, in_group) {
+  higher <- outer(score[in_group], score[!in_group], ">")
+  ties   <- outer(score[in_group], score[!in_group], "==")
+  mean(higher + 0.5 * ties)
+}
 
 
 # ---- 1. Data: private VALD export -> de-identified trial file -------------------
@@ -648,7 +881,7 @@ headline <- tibble(
 write_csv(headline, here("results", "headline.csv"))
 print(headline, width = Inf)
 
-# Figure 1 (abstract): age-adjusted rank of every player with its 95% range, coloured by decision group.
+# Rank-range figure (Figure 1 of the abstract; Figure 3 of the paper): age-adjusted rank of every player with its 95% range, coloured by decision group.
 # y = rank position (1 at the top); legend sits in the empty top-right corner; every text element counts
 # towards the abstract's word limit, so labels are short.
 rank_breaks <- c(1, k_top, 100, 150, n_main)
@@ -776,7 +1009,7 @@ write_xlsx(c(list(README = readme), sheets), here("results", "athlete_ranking_re
 
 # ---- 9. Paper assets ------------------------------------------------------------------------
 # Every number, table and figure in the SSAC manuscript is written here from the objects above,
-# so the paper contains no hand-typed results (paper/build_paper.R reads results/paper/).
+# so the paper contains no hand-typed results (paper/build_docx.py reads results/paper/).
 
 out$paper <- here("results", "paper")
 dir.create(out$paper, showWarnings = FALSE)
@@ -914,7 +1147,6 @@ save_paper_fig <- function(plot, name, width, height) {
   ggsave(file.path(out$paper, paste0(name, ".png")), plot, width = width, height = height, dpi = 600,
          bg = "white", device = ragg::agg_png)
 }
-save_paper_fig(no_title(fig1), "fig1_rank_ranges", 6.5, 4.6)
 
 bench_long <- benchmark |>
   mutate(label = fct_reorder(ranker_label(ranker), -overall_mean_rank)) |>
@@ -922,7 +1154,7 @@ bench_long <- benchmark |>
          `B. Held-out visit: vs unseen visit` = heldout_spearman) |>
   pivot_longer(-label) |>
   mutate(weight = str_extract(label, "equal|entropy|MEREC"))
-fig2 <- ggplot(bench_long, aes(value, label, colour = weight, shape = weight)) +
+fig_bench <- ggplot(bench_long, aes(value, label, colour = weight, shape = weight)) +
   geom_point(size = 2) +
   facet_wrap(~name, scales = "free_x") +
   scale_colour_manual(values = c(equal = "#0072B2", entropy = "#D55E00", MEREC = "#009E73"), name = "Weights") +
@@ -931,9 +1163,9 @@ fig2 <- ggplot(bench_long, aes(value, label, colour = weight, shape = weight)) +
   theme_figure + theme(legend.position = "bottom", strip.background = element_blank(),
                        strip.text = element_text(face = "bold", size = 9, hjust = 0),
                        panel.grid.major.y = element_line(colour = "grey92", linewidth = 0.3))
-save_paper_fig(fig2, "fig2_benchmark", 6.5, 4.4)
+save_paper_fig(fig_bench, "fig1_benchmark", 6.5, 4.4)          # paper Figure 1
 
-fig3 <- ggplot(athlete_report, aes(current_rank, age_rank, colour = age_latest)) +
+fig_age <- ggplot(athlete_report, aes(current_rank, age_rank, colour = age_latest)) +
   annotate("rect", xmin = -Inf, xmax = k_top + 0.5, ymin = -Inf, ymax = k_top + 0.5, fill = "grey90") +
   geom_abline(linetype = "dashed", colour = "grey50") +
   geom_hline(yintercept = k_top + 0.5, linetype = "dotted", colour = "grey40") +
@@ -943,19 +1175,8 @@ fig3 <- ggplot(athlete_report, aes(current_rank, age_rank, colour = age_latest))
   scale_x_continuous(breaks = c(1, k_top, 100, 150, n_main)) + scale_y_continuous(breaks = c(1, k_top, 100, 150, n_main)) +
   labs(x = "Current rank (no age adjustment; 1 = best)", y = "Age-adjusted rank (1 = best)") +
   theme_figure + theme(legend.position = "right")
-save_paper_fig(fig3, "fig3_current_vs_age", 6.5, 4.6)
-
-fig4 <- ggplot(athlete_report, aes(age_rank, age_p_topk, colour = factor(age_decision, levels = names(decision_labels)))) +
-  geom_vline(xintercept = k_top + 0.5, linetype = "dashed", colour = "grey30", linewidth = 0.4) +
-  geom_hline(yintercept = c(settings$p_reject, settings$p_select), linetype = "dotted", colour = "grey50") +
-  geom_point(size = 1.3) +
-  scale_colour_manual(values = decision_colours, labels = decision_labels, name = "Decision") +
-  scale_x_continuous(breaks = c(1, k_top, 100, 150, n_main)) +
-  labs(x = "Age-adjusted rank (1 = best)", y = sprintf("P(truly in top %d)", k_top)) +
-  theme_figure + theme(legend.position = "inside", legend.position.inside = c(0.97, 0.97),
-                       legend.justification = c(1, 1),
-                       legend.background = element_rect(fill = "white", colour = "grey80", linewidth = 0.3))
-save_paper_fig(fig4, "fig4_selection_probability", 6.5, 3.6)
+save_paper_fig(fig_age, "fig2_current_vs_age", 6.5, 4.6)        # paper Figure 2
+save_paper_fig(no_title(fig1), "fig3_rank_ranges", 6.5, 4.6)   # paper Figure 3
 
 # 9g. Sensitivity: does the ranking method change who is in the top k? (point estimates, age-relative)
 all_scores <- score_all(X$age)
@@ -994,25 +1215,6 @@ leaderboard <- athlete_report |>
             `Age-adjusted rank` = fmt(age_rank, 0), `95% rank set` = sprintf("%.0f\u2013%.0f", age_rank_lower, age_rank_upper),
             `P(top 37)` = fmt(age_p_topk), Decision = decision_labels[age_decision])
 write_csv(leaderboard, file.path(out$paper, "table_leaderboard.csv"))
-
-# 9i. Pipeline diagram (Figure 1 of the paper)
-steps <- tibble(
-  x = 1:5,
-  title = c("1. Raw tests", "2. Clean and\nselect KPIs", "3. Age-relative\nscores", "4. Current ability\nand composite", "5. Uncertainty\nand decision"),
-  body = c(sprintf("%s players\n%s attempts\nCMJ, DJ, SLJ", num[["n_athletes_all"]], num[["n_attempts_all"]]),
-           sprintf("%s metrics \u2192 %s KPIs\nICC \u2265 0.75\n|r| < 0.70", num[["n_candidates"]], num[["n_kpis"]]),
-           "LMS model\n(GAMLSS)\nvs same-age peers",
-           "Mixed model\nper KPI; 15\nrankers compared",
-           sprintf("%s bootstraps\nP(top k)\nselect / retest / release", num[["n_boot"]])))
-fig_pipe <- ggplot(steps) +
-  geom_tile(aes(x, 0.5), width = 0.84, height = 1.5, fill = "#EAF2FA", colour = "#0072B2", linewidth = 0.4) +
-  geom_text(aes(x, 0.98, label = title), fontface = "bold", size = 3.1, lineheight = 0.9) +
-  geom_text(aes(x, 0.2, label = body), size = 2.8, lineheight = 0.95, colour = "grey20") +
-  geom_segment(data = tibble(x = 1:4 + 0.42, xend = 2:5 - 0.42), aes(x = x, xend = xend, y = 0.5, yend = 0.5),
-               arrow = arrow(length = unit(4, "pt"), type = "closed"), colour = "grey30", linewidth = 0.4) +
-  coord_cartesian(xlim = c(0.56, 5.44), ylim = c(-0.27, 1.27), expand = FALSE) +
-  theme_void()
-save_paper_fig(fig_pipe, "fig0_pipeline", 6.5, 1.8)
 
 # Package versions used (install_packages.R reads this file)
 pkgs <- c("gamlss", "gamlss.dist", "tidyverse", "here", "data.table", "lme4", "Matrix", "csranks", "writexl",
